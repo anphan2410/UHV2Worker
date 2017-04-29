@@ -25,11 +25,13 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    binaryprotocol.cpp
+    binaryprotocol.cpp \
+    uhv2worker.cpp
 
 HEADERS  += mainwindow.h \
     andebug.h \
     binaryprotocol.h \
-    straystuffs.h
+    straystuffs.h \
+    uhv2worker.h
 
 FORMS    += mainwindow.ui

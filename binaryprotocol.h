@@ -1,8 +1,10 @@
 #ifndef BINARYPROTOCOL_H
 #define BINARYPROTOCOL_H
 
-#include<QDebug>
-#include<QtMath>
+#include <QDebug>
+#include <QtMath>
+#include "andebug.h"
+#include "straystuffs.h"
 
 ///
 /// \brief The BinaryProtocol class

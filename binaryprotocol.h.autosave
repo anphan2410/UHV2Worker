@@ -85,6 +85,7 @@ public:
     static bool IsBP(const quint8 BPNum);
     static quint8 BPCount();
     static bool DeleteBP(const quint8 BPNum);
+    static void ClearBPObjSet();
 
     quint8 GetBPNo() const;
     void SetBPNo(const quint8 BPNum);

@@ -156,6 +156,11 @@ bool BinaryProtocol::DeleteBP(const quint8 BPNum)
         return false;
 }
 
+void BinaryProtocol::ClearBPObjSet()
+{
+    BinaryProtocol::BPObjSet.clear();
+}
+
 quint8 BinaryProtocol::GetBPNo() const
 {
     return mBPNo;

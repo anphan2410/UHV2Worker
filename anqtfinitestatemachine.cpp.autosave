@@ -1,0 +1,12 @@
+#include "anqtfinitestatemachine.h"
+
+AnQtFiniteStateMachine::AnQtFiniteStateMachine(QObject *parent) : QObject(parent)
+{
+
+}
+
+void AnQtFiniteStateMachine::start()
+{
+    if (StartState != NULL)
+        StartState();
+}

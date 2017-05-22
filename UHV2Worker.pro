@@ -1,12 +1,12 @@
 #-------------------------------------------------
 #
-# Project created by QtCreator 2017-04-29T14:46:22
+# Project created by QtCreator 2017-05-08T15:59:32
 #
 #-------------------------------------------------
 
 QT       += core gui
 
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets serialport
 
 TARGET = UHV2Worker
 TEMPLATE = app
@@ -29,9 +29,9 @@ SOURCES += main.cpp\
     uhv2worker.cpp
 
 HEADERS  += mainwindow.h \
-    andebug.h \
     binaryprotocol.h \
+    uhv2worker.h \
     straystuffs.h \
-    uhv2worker.h
+    anqtdebug.h
 
 FORMS    += mainwindow.ui

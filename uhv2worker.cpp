@@ -54,7 +54,26 @@ void UHV2Worker::Initialization()
         qApp->processEvents();
     }
     anDebugWrap(UHV2WorkerDebug,anDebug("UHV2SerialPort Is Connected !"));
-    //currentState=...
+    if (currentState != NULL)
+    {
+        currentState = &SendAndRead;
+    }
+}
+
+void UHV2Worker::SendAndRead()
+{
+    if (currentState != NULL)
+    {
+        currentState = &PauseAndResume;
+    }
+}
+
+void UHV2Worker::PauseAndResume()
+{
+    if (currentState != NULL)
+    {
+        currentState = &SendAndRead;
+    }
 }
 
 void UHV2Worker::start()

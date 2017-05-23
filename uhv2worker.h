@@ -11,8 +11,26 @@
 class UHV2Worker : public QObject
 {
     Q_OBJECT
+public:
+    typedef struct
+    {
+        quint8 Priority = 0;
+        QByteArray * Message;
+        QString * UniqueKey;
+    } CommandMessage;
+    explicit UHV2Worker(QObject *parent = 0);
+signals:
+    void UHV2WorkerStopped();
+public slots:
+    void NewConfigRequestUHV2SerialPort(const QString &NewPortName);
+    void start();
+    void resume();
+    void pause();
+    void stop();
 
-    typedef void (*vovaFnctr)();
+private:
+
+    typedef void (UHV2Worker::*vovaFnctr)();
 
     static constexpr const quint8 WriteTimeOut = 100;
     static constexpr const quint16 ReadTimeOut = 300;
@@ -21,29 +39,12 @@ class UHV2Worker : public QObject
     bool isContinuous = false;
 
     QString PortName = "";
-    QMap<quint8,QList<UHV2WorkerCommandMessage*>*> CommandList;
+    QMap<quint8,QList<CommandMessage*>*> CommandList;
     QSerialPort *UHV2SerialPort;
 
     void Initialization();
     void SendAndRead();
-public:
-
-    typedef struct
-    {
-        quint8 Priority = 0;
-        QByteArray * Message;
-        QString * UniqueKey;
-    } UHV2WorkerCommandMessage;
-
-    explicit UHV2Worker(QObject *parent = 0);
-signals:
-    void UHV2WorkerStopped();
-public slots:    
-    void NewConfigRequestUHV2SerialPort(const QString &NewPortName);
-    void start();
-    void resume();
-    void pause();
-    void stop();
+    void PauseAndResume();
 };
 
 #endif // UHV2WORKER_H

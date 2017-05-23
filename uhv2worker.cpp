@@ -33,13 +33,13 @@ void UHV2Worker::Initialization()
                 anDebug("Valid PortName !");
                 anqDebug(_VarView(PortName));
                 );
-    UHV2SerialPort.setReadBufferSize(64);
-    UHV2SerialPort.setDataBits(QSerialPort::Data8);
-    UHV2SerialPort.setBaudRate(QSerialPort::Baud9600);
-    UHV2SerialPort.setStopBits(QSerialPort::OneStop);
-    UHV2SerialPort.setParity(QSerialPort::NoParity);
-    UHV2SerialPort.setFlowControl(QSerialPort::NoFlowControl);
-    UHV2SerialPort.setPortName(PortName);
+    UHV2SerialPort->setReadBufferSize(64);
+    UHV2SerialPort->setDataBits(QSerialPort::Data8);
+    UHV2SerialPort->setBaudRate(QSerialPort::Baud9600);
+    UHV2SerialPort->setStopBits(QSerialPort::OneStop);
+    UHV2SerialPort->setParity(QSerialPort::NoParity);
+    UHV2SerialPort->setFlowControl(QSerialPort::NoFlowControl);
+    UHV2SerialPort->setPortName(PortName);
     anDebugWrap(UHV2WorkerDebug,anDebug("UHV2SerialPort Configured !"));
     quint8 count0 = 0;
     while (!UHV2SerialPort->open(QIODevice::ReadWrite))
@@ -62,6 +62,7 @@ void UHV2Worker::Initialization()
 
 void UHV2Worker::SendAndRead()
 {
+
     if (currentState != NULL)
     {
         currentState = &PauseAndResume;
@@ -79,7 +80,7 @@ void UHV2Worker::PauseAndResume()
 void UHV2Worker::start()
 {
     anDebugWrap(UHV2WorkerDebug,anDebug("Start Button Pressed !"));
-    currentState = &Initialization;
+    currentState = &UHV2Worker::Initialization;
     isContinuous = true;
     while (currentState != NULL)
     {

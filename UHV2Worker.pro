@@ -7,7 +7,7 @@
 QT       += core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets serialport
-
+CONFIG += -std=c++11
 TARGET = UHV2Worker
 TEMPLATE = app
 
@@ -26,12 +26,16 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += main.cpp\
         mainwindow.cpp \
     binaryprotocol.cpp \
-    uhv2worker.cpp
+    UHV2Worker/uhv2worker.cpp \
+    UHV2Worker/portnamerequest.cpp \
+    UHV2Worker/serialportconfigrequest.cpp
 
 HEADERS  += mainwindow.h \
     binaryprotocol.h \
-    uhv2worker.h \
     straystuffs.h \
-    anqtdebug.h
+    anqtdebug.h \
+    UHV2Worker/uhv2worker.h \
+    UHV2Worker/portnamerequest.h \
+    UHV2Worker/serialportconfigrequest.h
 
 FORMS    += mainwindow.ui

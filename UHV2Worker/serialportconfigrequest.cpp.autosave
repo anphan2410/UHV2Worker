@@ -1,0 +1,7 @@
+#include "serialportconfigrequest.h"
+
+SerialPortConfigRequest::SerialPortConfigRequest(UHV2Worker *parent)
+    : QSignalTransition(parent, &UHV2Worker::PortNameChanged)
+{
+
+}

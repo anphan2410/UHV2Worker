@@ -13,7 +13,7 @@ public:
 protected:
     void onEntry(QEvent *) override;
 private:
-    UHV2Worker *parentPtr;
+    UHV2Worker *parentPtr = Q_NULLPTR;
 };
 
 #endif // SERIALPORTINFOVALIDATION_H

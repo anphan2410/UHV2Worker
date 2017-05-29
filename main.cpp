@@ -17,16 +17,24 @@ int main(int argc, char *argv[])
 
 
 
+    QSerialPort *test = new QSerialPort("COM1");
+    qDebug() << "try : " << test->open(QIODevice::ReadWrite);
+    qDebug() << test->isOpen();
+    QSerialPort *test2 = new QSerialPort("COM1");
+    qDebug() << "try : " << test2->open(QIODevice::ReadWrite);
+    qDebug() << test2->isOpen();
+    qDebug() << test->isOpen();
 //    QSerialPortInfo port0 = QSerialPortInfo::availablePorts().at(0);
+
 //    QSerialPortInfo port1 = QSerialPortInfo::availablePorts().at(1);
 //    qDebug() << port0.portName() << " INFO: " << port0.description();
 //    qDebug() << port1.portName() << " INFO: " << port1.description();
 
 
 
-//    QSerialPortInfo *test = new QSerialPortInfo("COM1");
+    QSerialPortInfo *testa = new QSerialPortInfo("COM1");
 
-//    qDebug() << test->isNull() << " and " << test->isBusy() << " finally " << test->isValid();
+    qDebug() << testa->isNull() << " and " << testa->isBusy() << " finally " << testa->isValid();
 
     QApplication a(argc, argv);
     MainWindow w;

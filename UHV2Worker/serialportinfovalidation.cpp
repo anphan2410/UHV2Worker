@@ -18,5 +18,12 @@ void SerialPortInfoValidation::onEntry(QEvent *)
     if (SerialPortInfo.isNull())
         machine()->postEvent(UHV2Worker::DirectStateTransitionRequest("SerialPortInfoRequest"));
     else
-        machine()->postEvent(UHV2Worker::DirectStateTransitionRequest("SerialPortConnectionEstablishment"));
+    {
+        if (SerialPortInfo.isBusy())
+        {
+            parentPtr->setErrorStatus(UHV2Worker::SerialPortBusy);
+        }
+        else
+            machine()->postEvent(UHV2Worker::DirectStateTransitionRequest("SerialPortConnectionEstablishment"));
+    }
 }

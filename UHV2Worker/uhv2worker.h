@@ -2,6 +2,8 @@
 #define UHV2WORKER_H
 
 #include <QStateMachine>
+#include <QHash>
+#include "straystuffs.h"
 
 class UHV2Worker : public QStateMachine
 {
@@ -9,11 +11,15 @@ class UHV2Worker : public QStateMachine
     Q_ENUMS(DataExchange)
     Q_PROPERTY(QString PortName READ getPortName WRITE setPortName NOTIFY PortNameChanged)
 public:
+    UHV2Worker();
     enum DataExchange {
         PortNameRequest,
         PortNameReply
-    };
-    UHV2Worker();
+    };    
+    static QEvent *DirectStateTransitionRequest(const QString &StateName);
+    static quint16 getStateUserEventNumberByStateName(const QString &StateName);
+    static QString *getStateNameByStateUserEventNumber(quint16 StateUserEventNumber);
+
 
     const QString getPortName() const { return *PortName;}
 
@@ -23,6 +29,8 @@ signals:
     void Out(const DataExchange &, const QVariant * const = Q_NULLPTR);
 public slots:
 private:
+    static const QHash<QString, quint16> StateName2StateUserEventNumber;
+    static const QHash<quint16, QString> StateUserEventNumber2StateName;
     const QString * PortName = new QString("");
 
 };

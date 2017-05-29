@@ -652,23 +652,4 @@ const QHash<QString , BinaryProtocol::TypCmd> &BinaryProtocol::CmdMean2CmdCode =
 /// \brief UHV2 Command Set
 /// \abstract Fast Search For Mean Indexed By Code
 ///
-const QHash<BinaryProtocol::TypCmd, QString > &BinaryProtocol::CmdCode2CmdMean = BinaryProtocol::SwapKeyValQHash(BinaryProtocol::CmdMean2CmdCode);
-
-///
-/// \brief BinaryProtocol::SwapKeyValQHash
-/// \return A Reference To A Same QHash with OldKey -> Value, OldValue -> Key,
-///             This Is Used For Initialization of Class Static Set
-///
-template<typename TN>
-const QHash<TN, QString> &BinaryProtocol::SwapKeyValQHash(const QHash<QString, TN> &AQHashKeyValSet)
-{
-    QHash<TN, QString> &tmp = * new QHash<TN, QString>();
-    QString tmp2 = "";
-    auto KeyItr = AQHashKeyValSet.keyBegin();
-    for (; KeyItr!=AQHashKeyValSet.keyEnd(); KeyItr++)
-    {
-        tmp2 = *KeyItr;
-        tmp.insert(AQHashKeyValSet.value(tmp2), tmp2);
-    }
-    return tmp;
-}
+const QHash<BinaryProtocol::TypCmd, QString > &BinaryProtocol::CmdCode2CmdMean = SwapKeyValOnOneToOneQHash(BinaryProtocol::CmdMean2CmdCode);

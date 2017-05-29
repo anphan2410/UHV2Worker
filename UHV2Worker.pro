@@ -27,15 +27,21 @@ SOURCES += main.cpp\
         mainwindow.cpp \
     binaryprotocol.cpp \
     UHV2Worker/uhv2worker.cpp \
-    UHV2Worker/portnamerequest.cpp \
-    UHV2Worker/serialportconfigrequest.cpp
+    UHV2Worker/serialportinfovalidationrequest.cpp \
+    UHV2Worker/serialportinfovalidation.cpp \
+    UHV2Worker/serialportinforequest.cpp \
+    UHV2Worker/uhv2workerdirectstatetransition.cpp \
+    UHV2Worker/serialportconnectionestablishment.cpp
 
 HEADERS  += mainwindow.h \
     binaryprotocol.h \
     straystuffs.h \
     anqtdebug.h \
     UHV2Worker/uhv2worker.h \
-    UHV2Worker/portnamerequest.h \
-    UHV2Worker/serialportconfigrequest.h
+    UHV2Worker/serialportinfovalidationrequest.h \
+    UHV2Worker/serialportinfovalidation.h \
+    UHV2Worker/serialportinforequest.h \
+    UHV2Worker/uhv2workerdirectstatetransition.h \
+    UHV2Worker/serialportconnectionestablishment.h
 
 FORMS    += mainwindow.ui

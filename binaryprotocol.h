@@ -35,12 +35,7 @@ class BinaryProtocol
     static constexpr const TypCh _BaseCh = 0x30;
 
     //Checksum Mask
-    static constexpr const TypChkSum _MskChkSum = 0x7F;
-
-
-    //Supported Function For Purpose of Initialization Data Set Below
-    template <typename TN>
-    static const QHash<TN, QString> &SwapKeyValQHash(const QHash<QString, TN> &AQHashKeyValSet);
+    static constexpr const TypChkSum _MskChkSum = 0x7F;    
 
     //Command Set Indexed In Two Fields: Command Meaning & Command Code, Optimizing For Fast Performance
     //All Details About Commands Defined In Source File

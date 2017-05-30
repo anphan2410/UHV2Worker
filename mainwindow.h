@@ -3,7 +3,8 @@
 
 #include <QMainWindow>
 #include <QThread>
-
+#include <QSerialPort>
+#include <QDebug>
 
 namespace Ui {
 class MainWindow;

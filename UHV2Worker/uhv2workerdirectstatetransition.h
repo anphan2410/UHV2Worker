@@ -8,10 +8,11 @@ class UHV2WorkerDirectStateTransition : public QAbstractTransition
 {
 public:
     UHV2WorkerDirectStateTransition(const QString &StateName);
+    ~UHV2WorkerDirectStateTransition();
 protected:
     virtual bool eventTest(QEvent *e) override;
 private:
-    const QString mStateName;
+    const QString * mStateName = Q_NULLPTR;
 };
 
 #endif // UHV2WORKERDIRECTSTATETRANSITION_H

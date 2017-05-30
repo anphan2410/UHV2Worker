@@ -1,7 +1,6 @@
 #include "serialportinforequest.h"
 
 SerialPortInfoRequest::SerialPortInfoRequest(UHV2Worker *parent, quint32 TimerIntervalInMilisecond)
-    : QState(parent)
 {
     timer.setParent(this);
     timer.setInterval(TimerIntervalInMilisecond);

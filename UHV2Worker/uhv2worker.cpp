@@ -3,6 +3,8 @@
 UHV2Worker::UHV2Worker()
 {
 
+    qRegisterMetaType<UHV2Worker::DataExchange>("UHV2Worker::DataExchange");
+    qRegisterMetaType<UHV2Worker::ErrorAndNotification>("UHV2Worker::ErrorAndNotification");
 }
 
 QEvent *UHV2Worker::DirectStateTransitionRequest(const QString &StateName)
@@ -20,42 +22,46 @@ QString *UHV2Worker::getStateNameByStateUserEventNumber(quint16 StateUserEventNu
     return new QString(UHV2Worker::StateUserEventNumber2StateName.value(StateUserEventNumber));;
 }
 
-const UHV2Worker::ErrorAndNotification UHV2Worker::getErrorStatus() const
+void UHV2Worker::In(QVariant AnUHV2EnumValue, QVariant *rawData)
 {
-    return ErrorStatus;
-}
-
-void UHV2Worker::setPortName(const QString &NewPortName)
-{
-    PortName = new QString(NewPortName);
-    emit PortNameChanged(*PortName);
-}
-
-void UHV2Worker::setSerialPort(QSerialPort *ASerialPort)
-{
-    SerialPort = ASerialPort;
-}
-
-void UHV2Worker::setErrorStatus(UHV2Worker::ErrorAndNotification AnErrorStatus)
-{
-    ErrorStatus = AnErrorStatus;
-    if (ErrorStatus != UHV2Worker::Nothing)
-    {
-        emit ErrorStatusSet();
+    switch (AnUHV2EnumValue.toInt()) {
+    case PortNameReply:
+        if (rawData->toString() != "")
+        {
+            *(WorkingInteractionSet->PortName) = rawData->toString();
+            emit WorkingInteractionSet->PortNameChanged();
+        }
+        break;
+    default:
+        break;
     }
 }
 
-void UHV2Worker::clearErrorStatus()
-{
-    ErrorStatus = UHV2Worker::Nothing;
-}
+//void UHV2Worker::setSerialPort(QSerialPort *ASerialPort)
+//{
+//    SerialPort = ASerialPort;
+//    QObject::connect(SerialPort,&QSerialPort::errorOccurred
+//                     ,this,[this]()
+//                            {
+//                                this->setErrorStatus(UHV2Worker::SerialPortError);
+//                            });
+//}
+
+//void UHV2Worker::setErrorStatus(UHV2Worker::ErrorAndNotification AnErrorStatus)
+//{
+//    ErrorStatus = AnErrorStatus;
+//    if (ErrorStatus != UHV2Worker::Nothing)
+//    {
+//        emit ErrorStatusSet();
+//    }
+//}
 
 const QHash<QString, quint16> UHV2Worker::StateName2StateUserEventNumber = QHash<QString, quint16>
 ({
      {"SerialPortInfoRequest",0},
      {"SerialPortInfoValidation",1},
      {"SerialPortConnectionEstablishment",2},
-     {"SendACommand",3},
+     {"SolitaryMessageTransmission",3},
      {"ErrorAnnouncement",7}
  });
 

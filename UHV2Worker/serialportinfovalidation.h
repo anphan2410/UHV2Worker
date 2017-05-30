@@ -8,12 +8,12 @@
 class SerialPortInfoValidation : public QState
 {
 public:
-    SerialPortInfoValidation(UHV2Worker *parent);
+    SerialPortInfoValidation(UHV2Worker::InteractionSet *VarSet);
     ~SerialPortInfoValidation();
 protected:
     void onEntry(QEvent *) override;
 private:
-    UHV2Worker *parentPtr = Q_NULLPTR;
+    UHV2Worker::InteractionSet *VarSetPtr = Q_NULLPTR;
 };
 
 #endif // SERIALPORTINFOVALIDATION_H

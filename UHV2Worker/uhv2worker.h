@@ -3,8 +3,11 @@
 
 #include <QStateMachine>
 #include <QHash>
+#include <QPair>
+#include <QMap>
 #include <QSerialPort>
 #include "straystuffs.h"
+#include "interactionset.h"
 
 class UHV2Worker : public QStateMachine
 {
@@ -18,36 +21,29 @@ public:
         PortNameReply
     };    
     enum ErrorAndNotification {
-        Nothing,
-        SerialPortBusy,
-        SerialPortFailedToOpen
+        Nothing = 0,
+        SerialPortError
     };
+    typedef struct
+    {
+        quint8 Priority = 0;
+        QByteArray * Message;
+        QString * TimeStamp;
+    } CommandMessage;
 
     static QEvent *DirectStateTransitionRequest(const QString &StateName);
     static quint16 getStateUserEventNumberByStateName(const QString &StateName);
     static QString *getStateNameByStateUserEventNumber(quint16 StateUserEventNumber);
 
-    const QString getPortName() const { return *PortName;}
-    const ErrorAndNotification getErrorStatus() const;
 
-
-    void setPortName(const QString &NewPortName);
-
-    void setSerialPort(QSerialPort * ASerialPort);
-
-    void setErrorStatus(ErrorAndNotification AnErrorStatus);
-    void clearErrorStatus();
 signals:
-    void PortNameChanged(const QString &);
-    void ErrorStatusSet();
-    void Out(const DataExchange &, const QVariant * const = Q_NULLPTR);
+    void Out(QVariant AnUHV2EnumValue, QVariant * = Q_NULLPTR);
 public slots:
+    void In(QVariant AnUHV2EnumValue, QVariant * rawData = Q_NULLPTR);
 private:
     static const QHash<QString, quint16> StateName2StateUserEventNumber;
     static const QHash<quint16, QString> StateUserEventNumber2StateName;
-    QString * PortName = new QString("");
-    QSerialPort * SerialPort = Q_NULLPTR;
-    ErrorAndNotification ErrorStatus = Nothing;
+    InteractionSet * WorkingInteractionSet = Q_NULLPTR;
 };
 
 Q_DECLARE_METATYPE(UHV2Worker::DataExchange)

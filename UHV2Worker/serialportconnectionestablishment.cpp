@@ -1,33 +1,29 @@
 #include "serialportconnectionestablishment.h"
 
-SerialPortConnectionEstablishment::SerialPortConnectionEstablishment(UHV2Worker *parent)
-    : QState(parent), parentPtr(parent)
+SerialPortConnectionEstablishment::SerialPortConnectionEstablishment(UHV2Worker::InteractionSet *VarSet)
+    : VarSetPtr(VarSet)
 {
 
 }
 
 SerialPortConnectionEstablishment::~SerialPortConnectionEstablishment()
 {
-    parentPtr = Q_NULLPTR;
-    delete parentPtr;
+    VarSetPtr = Q_NULLPTR;
+    delete VarSetPtr;
 }
 
 void SerialPortConnectionEstablishment::onEntry(QEvent *)
 {
-    failTimeCount = 0;
-    QSerialPort *UHV2SerialPort = new QSerialPort(parentPtr->getPortName());
-    if (UHV2SerialPort->isOpen())
-        UHV2SerialPort->close();
-    while (failTimeCount <= 3)
+    if (VarSetPtr->SerialPort)
     {
-        if (UHV2SerialPort->open(QIODevice::ReadWrite))
-            break;
+        if (VarSetPtr->SerialPort->isOpen())
+        {
+            VarSetPtr->SerialPort->close();
+        }
     }
-    if (UHV2SerialPort->isOpen())
+    VarSetPtr->SerialPort = new QSerialPort(*VarSetPtr->PortName);
+    if (VarSetPtr->SerialPort->open(QIODevice::ReadWrite))
     {
-        parentPtr->setSerialPort(UHV2SerialPort);
-        machine()->postEvent(UHV2Worker::DirectStateTransitionRequest("SendACommand"));
+        machine()->postEvent(UHV2Worker::DirectStateTransitionRequest("SolitaryMessageTransmission"));
     }
-    else
-        parentPtr->setErrorStatus(UHV2Worker::SerialPortFailedToOpen);
 }

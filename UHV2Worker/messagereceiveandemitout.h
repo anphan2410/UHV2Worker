@@ -13,7 +13,6 @@ protected:
     void onEntry(QEvent *) override;
 private:
     quint16 TimeOut4ReadInMilisecond = 0;
-    QString * UniKey = Q_NULLPTR;
     UHV2Worker * parentPtr = Q_NULLPTR;
     UHV2WorkerVarSet * VarSetPtr = Q_NULLPTR;
 };

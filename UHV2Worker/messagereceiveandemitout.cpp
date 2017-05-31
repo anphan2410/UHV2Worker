@@ -18,14 +18,6 @@ MessageReceiveAndEmitOut::~MessageReceiveAndEmitOut()
 
 void MessageReceiveAndEmitOut::onEntry(QEvent *)
 {
-    if (VarSetPtr->currentTransmittedMessage)
-    {
-        UniKey = VarSetPtr->currentTransmittedMessage->second;
-        VarSetPtr->currentTransmittedMessage->first = Q_NULLPTR;
-        VarSetPtr->currentTransmittedMessage->second = Q_NULLPTR;
-        VarSetPtr->currentTransmittedMessage = Q_NULLPTR;
-        VarSetPtr->lastTransmittedMessagePriority = 0;
-    }
     if (VarSetPtr->SerialPort->waitForReadyRead(TimeOut4ReadInMilisecond*10))
     {
         QByteArray tmpRead(VarSetPtr->SerialPort->readAll());
@@ -33,10 +25,12 @@ void MessageReceiveAndEmitOut::onEntry(QEvent *)
         {
             tmpRead+=VarSetPtr->SerialPort->readAll();
         }
-        VarSetPtr->currentReceivedMessage = new UHV2WorkerVarSet::CommandMessage();
-        VarSetPtr->currentReceivedMessage->first = new QByteArray(tmpRead);
-        VarSetPtr->currentReceivedMessage->second = UniKey;
-        UniKey = Q_NULLPTR;
+        VarSetPtr->lastReceivedMessage->first = Q_NULLPTR;
+        VarSetPtr->lastReceivedMessage->second = Q_NULLPTR;
+        VarSetPtr->lastReceivedMessage = new UHV2WorkerVarSet::CommandMessage();
+        VarSetPtr->lastReceivedMessage->first = new QByteArray(tmpRead);
+        VarSetPtr->lastReceivedMessage->second = VarSetPtr->lastTransmittedMessage->second;
+
         emit parentPtr->Out();
     }
 }

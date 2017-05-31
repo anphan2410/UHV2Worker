@@ -32,7 +32,8 @@ SOURCES += main.cpp\
     UHV2Worker/uhv2workerdirectstatetransition.cpp \
     UHV2Worker/serialportconnectionestablishment.cpp \
     UHV2Worker/solitarymessagetransmission.cpp \
-    UHV2Worker/uhv2workervarset.cpp
+    UHV2Worker/uhv2workervarset.cpp \
+    UHV2Worker/messagereceiveandemitout.cpp
 
 HEADERS  += mainwindow.h \
     binaryprotocol.h \
@@ -44,6 +45,7 @@ HEADERS  += mainwindow.h \
     UHV2Worker/uhv2workerdirectstatetransition.h \
     UHV2Worker/serialportconnectionestablishment.h \
     UHV2Worker/solitarymessagetransmission.h \
-    UHV2Worker/uhv2workervarset.h
+    UHV2Worker/uhv2workervarset.h \
+    UHV2Worker/messagereceiveandemitout.h
 
 FORMS    += mainwindow.ui

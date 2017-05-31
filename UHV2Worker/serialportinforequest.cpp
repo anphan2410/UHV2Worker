@@ -1,6 +1,7 @@
 #include "serialportinforequest.h"
 
 SerialPortInfoRequest::SerialPortInfoRequest(UHV2Worker *parent, quint32 TimerIntervalInMilisecond)
+    : QState(parent)
 {
     timer.setParent(this);
     timer.setInterval(TimerIntervalInMilisecond);
@@ -9,7 +10,7 @@ SerialPortInfoRequest::SerialPortInfoRequest(UHV2Worker *parent, quint32 TimerIn
         QObject::connect(&timer, &QTimer::timeout
                         , this
                         , [parent](){
-                                emit parent->Out(UHV2Worker::PortNameRequest);
+                                emit parent->Out(UHV2WorkerVarSet::PortNameRequest);
                             }
                         , static_cast<Qt::ConnectionType>(Qt::AutoConnection | Qt::UniqueConnection));
     }

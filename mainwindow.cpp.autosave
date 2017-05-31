@@ -32,8 +32,7 @@ MainWindow::MainWindow(QWidget *parent) :
 //    QSerialPort test("COM1");
 //    qDebug() << "try open: " << test.open(QIODevice::ReadWrite);
 
-    QByteArray test("joij40t2");
-    qDebug() << test;
+
 }
 
 MainWindow::~MainWindow()

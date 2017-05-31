@@ -8,12 +8,13 @@
 class SerialPortConnectionEstablishment : public QState
 {
 public:
-    SerialPortConnectionEstablishment(UHV2Worker::InteractionSet *VarSet);
+    SerialPortConnectionEstablishment(UHV2Worker * parent, UHV2WorkerVarSet * VarSet);
     ~SerialPortConnectionEstablishment();
 protected:
     void onEntry(QEvent *) override;
 private:
-    UHV2Worker::InteractionSet *VarSetPtr = Q_NULLPTR;
+    UHV2Worker * parentPtr = Q_NULLPTR;
+    UHV2WorkerVarSet *VarSetPtr = Q_NULLPTR;
 };
 
 #endif // SERIALPORTCONNECTIONESTABLISHMENT_H

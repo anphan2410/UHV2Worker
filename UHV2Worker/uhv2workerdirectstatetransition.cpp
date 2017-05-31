@@ -1,18 +1,15 @@
 #include "uhv2workerdirectstatetransition.h"
 
-UHV2WorkerDirectStateTransition::UHV2WorkerDirectStateTransition(const QString &StateName)
-    : mStateName(&StateName)
+UHV2WorkerDirectStateTransition::UHV2WorkerDirectStateTransition(UHV2Worker *Sender, QAbstractState *destinationState)
+    : QSignalTransition(Sender, &UHV2Worker::DirectStateTransitionRequest)
 {
-
-}
-
-UHV2WorkerDirectStateTransition::~UHV2WorkerDirectStateTransition()
-{
-    mStateName = Q_NULLPTR;
-    delete mStateName;
+    this->setTargetState(destinationState);
 }
 
 bool UHV2WorkerDirectStateTransition::eventTest(QEvent *e)
 {
-    return (e->type() == (QEvent::User+UHV2Worker::getStateUserEventNumberByStateName(*mStateName)));
+    if (!(QSignalTransition::eventTest(e) && this->targetState()))
+        return false;
+    QStateMachine::SignalEvent *se = static_cast<QStateMachine::SignalEvent*>(e);
+    return (se->arguments().at(0).toString() == this->targetState()->objectName());
 }

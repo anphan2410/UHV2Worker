@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QThread>
 #include <QSerialPort>
+#include <QSerialPortInfo>
 #include <QDebug>
 
 namespace Ui {

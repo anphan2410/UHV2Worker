@@ -1,18 +1,16 @@
 #ifndef UHV2WORKERDIRECTSTATETRANSITION_H
 #define UHV2WORKERDIRECTSTATETRANSITION_H
 
-#include <QAbstractTransition>
+#include <QSignalTransition>
+#include <QAbstractState>
 #include "uhv2worker.h"
 
-class UHV2WorkerDirectStateTransition : public QAbstractTransition
+class UHV2WorkerDirectStateTransition : public QSignalTransition
 {
 public:
-    UHV2WorkerDirectStateTransition(const QString &StateName);
-    ~UHV2WorkerDirectStateTransition();
+    UHV2WorkerDirectStateTransition(UHV2Worker *Sender, QAbstractState *destinationState);
 protected:
     virtual bool eventTest(QEvent *e) override;
-private:
-    const QString * mStateName = Q_NULLPTR;
 };
 
 #endif // UHV2WORKERDIRECTSTATETRANSITION_H

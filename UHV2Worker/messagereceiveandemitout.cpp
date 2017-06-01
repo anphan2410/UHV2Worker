@@ -25,8 +25,6 @@ void MessageReceiveAndEmitOut::onEntry(QEvent *)
         {
             tmpRead+=VarSetPtr->SerialPort->readAll();
         }
-        VarSetPtr->lastReceivedMessage->first = Q_NULLPTR;
-        VarSetPtr->lastReceivedMessage->second = Q_NULLPTR;
         VarSetPtr->lastReceivedMessage = new UHV2WorkerVarSet::CommandMessage();
         VarSetPtr->lastReceivedMessage->first = new QByteArray(tmpRead);
         VarSetPtr->lastReceivedMessage->second = VarSetPtr->lastTransmittedMessage->second;

@@ -29,8 +29,8 @@ public:
     ErrorAndNotification ErrorStatus = Nothing;
     QMap<qint8,QList<CommandMessage*>*> * PendingMessageList = Q_NULLPTR;
     qint8 lastTransmittedMessagePriority = 0;
-    CommandMessage * currentTransmittedMessage = Q_NULLPTR;
-    CommandMessage * currentReceivedMessage = Q_NULLPTR;
+    CommandMessage * lastTransmittedMessage = Q_NULLPTR;
+    CommandMessage * lastReceivedMessage = Q_NULLPTR;
 signals:
     void PortNameChanged();
     void ErrorStatusSet();

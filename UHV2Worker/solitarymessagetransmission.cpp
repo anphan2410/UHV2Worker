@@ -16,20 +16,14 @@ SolitaryMessageTransmission::~SolitaryMessageTransmission()
 
 void SolitaryMessageTransmission::onEntry(QEvent *)
 {
-    if (VarSetPtr->currentReceivedMessage)
-    {
-        VarSetPtr->currentReceivedMessage->first = Q_NULLPTR;
-        VarSetPtr->currentReceivedMessage->second = Q_NULLPTR;
-        VarSetPtr->currentReceivedMessage = Q_NULLPTR;
-    }
     if (VarSetPtr->PendingMessageList->size())
     {
         if (VarSetPtr->PendingMessageList->last()->size())
         {
-            VarSetPtr->currentTransmittedMessage = VarSetPtr->PendingMessageList->last()->takeFirst();
-            if (VarSetPtr->currentTransmittedMessage)
+            VarSetPtr->lastTransmittedMessage = VarSetPtr->PendingMessageList->last()->takeFirst();
+            if (VarSetPtr->lastTransmittedMessage)
             {
-                VarSetPtr->SerialPort->write(*(VarSetPtr->currentTransmittedMessage->first));
+                VarSetPtr->SerialPort->write(*(VarSetPtr->lastTransmittedMessage->first));
             }
         }
     }

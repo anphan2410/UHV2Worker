@@ -2,7 +2,10 @@
 #define UHV2WORKERVARSET_H
 
 #include <QObject>
+#include <QPair>
+#include <QMap>
 #include <QSerialPort>
+#include "anqtdebug.h"
 
 class UHV2WorkerVarSet: public QObject
 {
@@ -10,32 +13,30 @@ class UHV2WorkerVarSet: public QObject
 public:
     explicit UHV2WorkerVarSet(QObject * parent = Q_NULLPTR);
     ~UHV2WorkerVarSet();
-    enum DataExchange {
-        PortNameRequest,
-        PortNameReply
-    };
-    Q_ENUM(DataExchange)
-    enum ErrorAndNotification {
+    enum MessageTopic {
         Nothing = 0,
+        PortNameRequest,
+        PortNameReply,
+        UHV2PrioritizedCommandMessage,
         SerialPortError,
-
+        RestartSerialPort,
     };
-    Q_ENUM(ErrorAndNotification)
+    Q_ENUM(MessageTopic)
     typedef QPair<QByteArray*,QString*> CommandMessage;
     typedef QPair<qint8,CommandMessage*> PrioritizedCommandMessage;
 
     QString * PortName = Q_NULLPTR;
     QSerialPort * SerialPort = Q_NULLPTR;
-    ErrorAndNotification ErrorStatus = Nothing;
     QMap<qint8,QList<CommandMessage*>*> * PendingMessageList = Q_NULLPTR;
     qint8 lastTransmittedMessagePriority = 0;
     CommandMessage * lastTransmittedMessage = Q_NULLPTR;
     CommandMessage * lastReceivedMessage = Q_NULLPTR;
-signals:
-    void PortNameChanged();
-    void ErrorStatusSet();
-public slots:
     void configSerialPort();
+signals:
+    void DirectStateTransitionRequest(const QString &);
+    void PortNameChanged();
+    void RestartSerialPortConnection();
+    void Out(QVariant, QVariant * = Q_NULLPTR);
 };
-
+Q_DECLARE_METATYPE(UHV2WorkerVarSet::PrioritizedCommandMessage)
 #endif // UHV2WORKERVARSET_H

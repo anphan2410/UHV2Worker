@@ -1,7 +1,7 @@
 #include "uhv2workerdirectstatetransition.h"
 
-UHV2WorkerDirectStateTransition::UHV2WorkerDirectStateTransition(UHV2Worker *Sender, QAbstractState *destinationState)
-    : QSignalTransition(Sender, &UHV2Worker::DirectStateTransitionRequest)
+UHV2WorkerDirectStateTransition::UHV2WorkerDirectStateTransition(UHV2WorkerVarSet *Sender, QAbstractState *destinationState)
+    : QSignalTransition(Sender, &UHV2WorkerVarSet::DirectStateTransitionRequest)
 {
     this->setTargetState(destinationState);
 }

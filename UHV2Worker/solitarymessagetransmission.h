@@ -2,17 +2,18 @@
 #define SOLITARYMESSAGETRANSMISSION_H
 
 #include <QState>
-#include "uhv2worker.h"
+#include "anqtdebug.h"
+#include "uhv2workervarset.h"
 
 class SolitaryMessageTransmission : public QState
 {
 public:
-    SolitaryMessageTransmission(UHV2Worker *parent, UHV2WorkerVarSet *VarSet);
+    SolitaryMessageTransmission(UHV2WorkerVarSet *VarSet, quint16 WriteTimeOutInMilisecond = 100);
     ~SolitaryMessageTransmission();
 protected:
     void onEntry(QEvent *) override;
 private:
-    UHV2Worker * parentPtr = Q_NULLPTR;
+    quint16 TimeOut4WriteInMilisecond = 0;
     UHV2WorkerVarSet * VarSetPtr = Q_NULLPTR;
 };
 

@@ -3,12 +3,12 @@
 
 #include <QSignalTransition>
 #include <QAbstractState>
-#include "uhv2worker.h"
+#include "uhv2workervarset.h"
 
 class UHV2WorkerDirectStateTransition : public QSignalTransition
 {
 public:
-    UHV2WorkerDirectStateTransition(UHV2Worker *Sender, QAbstractState *destinationState);
+    UHV2WorkerDirectStateTransition(UHV2WorkerVarSet *Sender, QAbstractState *destinationState);
 protected:
     virtual bool eventTest(QEvent *e) override;
 };

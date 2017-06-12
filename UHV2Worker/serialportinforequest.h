@@ -3,12 +3,13 @@
 
 #include <QState>
 #include <QTimer>
-#include "uhv2worker.h"
+#include "anqtdebug.h"
+#include "uhv2workervarset.h"
 
 class SerialPortInfoRequest : public QState
 {
 public:
-    SerialPortInfoRequest(UHV2Worker *parent, quint32 TimerIntervalInMilisecond = 1000);
+    SerialPortInfoRequest(UHV2WorkerVarSet *VarSet, quint32 TimerIntervalInMilisecond = 1000);
 protected:
     void onEntry(QEvent *) override;
     void onExit(QEvent *) override;

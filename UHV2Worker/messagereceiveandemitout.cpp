@@ -1,23 +1,20 @@
 #include "messagereceiveandemitout.h"
 
-MessageReceiveAndEmitOut::MessageReceiveAndEmitOut(UHV2Worker *parent, UHV2WorkerVarSet *VarSet, quint16 ReadTimeOutInMilisecond)
-    : QState(parent), parentPtr(parent), VarSetPtr(VarSet), TimeOut4ReadInMilisecond(ReadTimeOutInMilisecond)
+MessageReceiveAndEmitOut::MessageReceiveAndEmitOut(UHV2WorkerVarSet *VarSet, quint16 ReadTimeOutInMilisecond)
+    : VarSetPtr(VarSet), TimeOut4ReadInMilisecond(ReadTimeOutInMilisecond)
 {
-
+    anDebug("=> Construct A New State !");
 }
 
 MessageReceiveAndEmitOut::~MessageReceiveAndEmitOut()
 {
-    UniKey = Q_NULLPTR;
-    parentPtr = Q_NULLPTR;
     VarSetPtr = Q_NULLPTR;
-    delete UniKey;
-    delete parentPtr;
     delete VarSetPtr;
 }
 
 void MessageReceiveAndEmitOut::onEntry(QEvent *)
 {
+    anDebug("=> Enter State ...");
     if (VarSetPtr->SerialPort->waitForReadyRead(TimeOut4ReadInMilisecond*10))
     {
         QByteArray tmpRead(VarSetPtr->SerialPort->readAll());
@@ -28,7 +25,13 @@ void MessageReceiveAndEmitOut::onEntry(QEvent *)
         VarSetPtr->lastReceivedMessage = new UHV2WorkerVarSet::CommandMessage();
         VarSetPtr->lastReceivedMessage->first = new QByteArray(tmpRead);
         VarSetPtr->lastReceivedMessage->second = VarSetPtr->lastTransmittedMessage->second;
-
-        emit parentPtr->Out();
+        anDebug("=> Successfully To Read Message !");
+        emit VarSetPtr->Out(UHV2WorkerVarSet::UHV2PrioritizedCommandMessage,
+                            new UHV2WorkerVarSet::PrioritizedCommandMessage(VarSetPtr->lastTransmittedMessagePriority, VarSetPtr->lastReceivedMessage));
+    }
+    else
+    {
+        anDebug("=> Failed To Read Message !");
+        VarSetPtr->lastReceivedMessage = Q_NULLPTR;
     }
 }

@@ -1,6 +1,6 @@
-#include "serialportinforequest.h"
+#include "errorannouncement.h"
 
-SerialPortInfoRequest::SerialPortInfoRequest(UHV2WorkerVarSet *VarSet, quint32 TimerIntervalInMilisecond)
+ErrorAnnouncement::ErrorAnnouncement(UHV2WorkerVarSet *VarSet, quint32 TimerIntervalInMilisecond)
 {
     anDebug("=> Construct A New State !");
     timer.setParent(this);
@@ -10,8 +10,8 @@ SerialPortInfoRequest::SerialPortInfoRequest(UHV2WorkerVarSet *VarSet, quint32 T
         QObject::connect(&timer, &QTimer::timeout
                         , this
                         , [VarSet](){
-                                anDebug("=> Emit UHV2WorkerVarSet::PortNameRequest!");
-                                emit VarSet->Out(UHV2WorkerVarSet::PortNameRequest);
+                                anDebug("=> Emit UHV2WorkerVarSet::SerialPortError!");
+                                emit VarSet->Out(UHV2WorkerVarSet::SerialPortError);
                             }
                         , static_cast<Qt::ConnectionType>(Qt::AutoConnection | Qt::UniqueConnection));
     }

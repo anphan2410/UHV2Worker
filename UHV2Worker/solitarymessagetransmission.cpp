@@ -1,29 +1,38 @@
 #include "solitarymessagetransmission.h"
 
-SolitaryMessageTransmission::SolitaryMessageTransmission(UHV2Worker *parent, UHV2WorkerVarSet *VarSet)
-    : QState(parent), parentPtr(parent), VarSetPtr(VarSet)
+SolitaryMessageTransmission::SolitaryMessageTransmission(UHV2WorkerVarSet *VarSet, quint16 WriteTimeOutInMilisecond)
+    : VarSetPtr(VarSet), TimeOut4WriteInMilisecond(WriteTimeOutInMilisecond)
 {
-
+    anDebug("=> Construct A New State !");
 }
 
 SolitaryMessageTransmission::~SolitaryMessageTransmission()
 {
-    parentPtr = Q_NULLPTR;
     VarSetPtr = Q_NULLPTR;
-    delete parentPtr;
     delete VarSetPtr;
 }
 
 void SolitaryMessageTransmission::onEntry(QEvent *)
 {
+    anDebug("=> Enter State ...");
     if (VarSetPtr->PendingMessageList->size())
     {
         if (VarSetPtr->PendingMessageList->last()->size())
         {
+            VarSetPtr->lastTransmittedMessagePriority = VarSetPtr->PendingMessageList->lastKey();
             VarSetPtr->lastTransmittedMessage = VarSetPtr->PendingMessageList->last()->takeFirst();
             if (VarSetPtr->lastTransmittedMessage)
             {
                 VarSetPtr->SerialPort->write(*(VarSetPtr->lastTransmittedMessage->first));
+                if (VarSetPtr->SerialPort->waitForBytesWritten(TimeOut4WriteInMilisecond))
+                {
+                    anDebug("=> Successfully Write Message !");
+                }
+                else
+                {
+                    anDebug("=> Failed To Write Message !");
+                    VarSetPtr->lastTransmittedMessage = Q_NULLPTR;
+                }
             }
         }
     }

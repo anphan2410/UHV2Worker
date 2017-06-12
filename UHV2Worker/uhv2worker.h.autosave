@@ -10,6 +10,8 @@
 #include "serialportconnectionestablishment.h"
 #include "solitarymessagetransmission.h"
 #include "messagereceiveandemitout.h"
+#include "errorannouncement.h"
+#include "uhv2workerdirectstatetransition.h"
 
 class UHV2Worker : public QStateMachine
 {

@@ -1,21 +1,20 @@
 #include "serialportconnectionestablishment.h"
 
-SerialPortConnectionEstablishment::SerialPortConnectionEstablishment(UHV2Worker *parent, UHV2WorkerVarSet *VarSet)
-    : QState(parent), parentPtr(parent), VarSetPtr(VarSet)
+SerialPortConnectionEstablishment::SerialPortConnectionEstablishment(UHV2WorkerVarSet *VarSet)
+    : VarSetPtr(VarSet)
 {
-
+    anDebug("=> Construct A New State !");
 }
 
 SerialPortConnectionEstablishment::~SerialPortConnectionEstablishment()
 {
-    parentPtr = Q_NULLPTR;
     VarSetPtr = Q_NULLPTR;
-    delete parentPtr;
     delete VarSetPtr;
 }
 
 void SerialPortConnectionEstablishment::onEntry(QEvent *)
 {
+    anDebug("=> Enter State ...");
     if (VarSetPtr->SerialPort)
     {
         if (VarSetPtr->SerialPort->isOpen())
@@ -27,6 +26,11 @@ void SerialPortConnectionEstablishment::onEntry(QEvent *)
     VarSetPtr->configSerialPort();
     if (VarSetPtr->SerialPort->open(QIODevice::ReadWrite))
     {
-        emit parentPtr->DirectStateTransitionRequest("SolitaryMessageTransmission");
+        anDebug("=> Successfully Open A Serial Port !");
+        emit VarSetPtr->DirectStateTransitionRequest("SolitaryMessageTransmission");
+    }
+    else
+    {
+        anDebug("=> Failed To Open A Serial Port !");
     }
 }

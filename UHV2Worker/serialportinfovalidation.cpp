@@ -1,28 +1,27 @@
 #include "serialportinfovalidation.h"
 
-SerialPortInfoValidation::SerialPortInfoValidation(UHV2Worker *parent, UHV2WorkerVarSet *VarSet)
-    : QState(parent), parentPtr(parent), VarSetPtr(VarSet)
+SerialPortInfoValidation::SerialPortInfoValidation(UHV2WorkerVarSet *VarSet)
+    : VarSetPtr(VarSet)
 {
-
+    anDebug("=> Construct A New State !");
 }
 
 SerialPortInfoValidation::~SerialPortInfoValidation()
 {
-    parentPtr = Q_NULLPTR;
     VarSetPtr = Q_NULLPTR;
-    delete parentPtr;
     delete VarSetPtr;
 }
 
 void SerialPortInfoValidation::onEntry(QEvent *)
 {
+    anDebug("=> Enter State ...");
     QSerialPortInfo SerialPortInfo(*(VarSetPtr->PortName));
     if (SerialPortInfo.isNull())
     {
-        emit parentPtr->DirectStateTransitionRequest("SerialPortInfoRequest");
+        emit VarSetPtr->DirectStateTransitionRequest("SerialPortInfoRequest");
     }
     else
     {
-        emit parentPtr->DirectStateTransitionRequest("SerialPortConnectionEstablishment");
+        emit VarSetPtr->DirectStateTransitionRequest("SerialPortConnectionEstablishment");
     }
 }

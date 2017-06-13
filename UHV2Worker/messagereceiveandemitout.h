@@ -12,9 +12,9 @@ public:
     ~MessageReceiveAndEmitOut();
 protected:
     void onEntry(QEvent *) override;
-private:
-    quint16 TimeOut4ReadInMilisecond = 0;
+private:    
     UHV2WorkerVarSet * VarSetPtr = Q_NULLPTR;
+    quint16 TimeOut4ReadInMilisecond = 0;
 };
 
 #endif // MESSAGERECEIVEANDEMITOUT_H

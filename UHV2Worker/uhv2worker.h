@@ -2,6 +2,7 @@
 #define UHV2WORKER_H
 
 #include <QStateMachine>
+#include <QSignalTransition>
 #include "uhv2workervarset.h"
 #include "anqtdebug.h"
 #include "straystuffs.h"
@@ -10,6 +11,8 @@
 #include "serialportconnectionestablishment.h"
 #include "solitarymessagetransmission.h"
 #include "messagereceiveandemitout.h"
+#include "errorannouncement.h"
+#include "uhv2workerdirectstatetransition.h"
 
 class UHV2Worker : public QStateMachine
 {

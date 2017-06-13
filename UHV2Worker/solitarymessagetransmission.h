@@ -13,8 +13,8 @@ public:
 protected:
     void onEntry(QEvent *) override;
 private:
+    UHV2WorkerVarSet * VarSetPtr = Q_NULLPTR;    
     quint16 TimeOut4WriteInMilisecond = 0;
-    UHV2WorkerVarSet * VarSetPtr = Q_NULLPTR;
 };
 
 #endif // SOLITARYMESSAGETRANSMISSION_H

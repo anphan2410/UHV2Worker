@@ -15,6 +15,7 @@ protected:
     void onExit(QEvent *) override;
 private:
     QTimer timer;
+    UHV2WorkerVarSet * VarSetPtr = Q_NULLPTR;
 };
 
 #endif // ERRORANNOUNCEMENT_H

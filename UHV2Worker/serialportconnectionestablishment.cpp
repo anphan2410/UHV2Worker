@@ -15,18 +15,12 @@ SerialPortConnectionEstablishment::~SerialPortConnectionEstablishment()
 void SerialPortConnectionEstablishment::onEntry(QEvent *)
 {
     anDebug("=> Enter State ...");
-    if (VarSetPtr->SerialPort)
-    {
-        if (VarSetPtr->SerialPort->isOpen())
-        {
-            VarSetPtr->SerialPort->close();
-        }
-    }
     VarSetPtr->SerialPort = new QSerialPort();
     VarSetPtr->configSerialPort();
     if (VarSetPtr->SerialPort->open(QIODevice::ReadWrite))
     {
         anDebug("=> Successfully Open A Serial Port !");
+        emit VarSetPtr->Out(QVariant::fromValue(UHV2WorkerVarSet::SerialPortConnect));
         emit VarSetPtr->DirectStateTransitionRequest("SolitaryMessageTransmission");
     }
     else

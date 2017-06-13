@@ -3,11 +3,8 @@
 UHV2WorkerVarSet::UHV2WorkerVarSet(QObject *parent)
     : QObject(parent)
 {
-    qRegisterMetaType<UHV2WorkerVarSet::CommandMessage>("UHV2WorkerVarSet::CommandMessage");
     qRegisterMetaType<UHV2WorkerVarSet::PrioritizedCommandMessage>("UHV2WorkerVarSet::PrioritizedCommandMessage");
-    PortName = new QString();
-    SerialPort = new QSerialPort();
-    PendingMessageList = new QMap<qint8,QList<CommandMessage*>*>();
+    initialize();
     anDebug("=> Construct A New UHV2WorkerVarSet !");
 }
 
@@ -35,4 +32,17 @@ void UHV2WorkerVarSet::configSerialPort()
     SerialPort->setParity(QSerialPort::NoParity);
     SerialPort->setFlowControl(QSerialPort::NoFlowControl);
     SerialPort->setPortName(*PortName);
+}
+
+void UHV2WorkerVarSet::initialize()
+{
+    PortName = new QString();
+    if (SerialPort)
+        if (SerialPort->isOpen())
+            SerialPort->close();
+    SerialPort = new QSerialPort();
+    if (PendingMessageList)
+        PendingMessageList->clear();
+    PendingMessageList = new QMap<qint8,QList<CommandMessage*>*>();
+    ErrorStatus = Nothing;
 }

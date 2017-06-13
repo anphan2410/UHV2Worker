@@ -10,8 +10,8 @@ SerialPortInfoRequest::SerialPortInfoRequest(UHV2WorkerVarSet *VarSet, quint32 T
         QObject::connect(&timer, &QTimer::timeout
                         , this
                         , [VarSet](){
-                                anDebug("=> Emit UHV2WorkerVarSet::PortNameRequest!");
-                                emit VarSet->Out(UHV2WorkerVarSet::PortNameRequest);
+                                anDebug("=> Emit UHV2WorkerVarSet::ANewPortName!");
+                                emit VarSet->Out(QVariant::fromValue(UHV2WorkerVarSet::ANewPortName));
                             }
                         , static_cast<Qt::ConnectionType>(Qt::AutoConnection | Qt::UniqueConnection));
     }
@@ -19,6 +19,7 @@ SerialPortInfoRequest::SerialPortInfoRequest(UHV2WorkerVarSet *VarSet, quint32 T
 
 void SerialPortInfoRequest::onEntry(QEvent *)
 {
+    anDebug("=> Enter State ...");
     timer.start();
 }
 

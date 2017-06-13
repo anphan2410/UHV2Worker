@@ -1,6 +1,7 @@
 #include "errorannouncement.h"
 
 ErrorAnnouncement::ErrorAnnouncement(UHV2WorkerVarSet *VarSet, quint32 TimerIntervalInMilisecond)
+    : VarSetPtr(VarSet)
 {
     anDebug("=> Construct A New State !");
     timer.setParent(this);
@@ -10,19 +11,20 @@ ErrorAnnouncement::ErrorAnnouncement(UHV2WorkerVarSet *VarSet, quint32 TimerInte
         QObject::connect(&timer, &QTimer::timeout
                         , this
                         , [VarSet](){
-                                anDebug("=> Emit UHV2WorkerVarSet::SerialPortError!");
-                                emit VarSet->Out(UHV2WorkerVarSet::SerialPortError);
+                                anDebug("=> Emit Error Status!");
+                                emit VarSet->Out(QVariant::fromValue(VarSet->ErrorStatus));
                             }
                         , static_cast<Qt::ConnectionType>(Qt::AutoConnection | Qt::UniqueConnection));
     }
 }
 
-void SerialPortInfoRequest::onEntry(QEvent *)
+void ErrorAnnouncement::onEntry(QEvent *)
 {
     timer.start();
 }
 
-void SerialPortInfoRequest::onExit(QEvent *)
+void ErrorAnnouncement::onExit(QEvent *)
 {
     timer.stop();
+    VarSetPtr->ErrorStatus = UHV2WorkerVarSet::Nothing;
 }

@@ -5,6 +5,8 @@
 #include <QPair>
 #include <QMap>
 #include <QSerialPort>
+#include <QStateMachine>
+#include <QMetaType>
 #include "anqtdebug.h"
 
 class UHV2WorkerVarSet: public QObject
@@ -15,11 +17,14 @@ public:
     ~UHV2WorkerVarSet();
     enum MessageTopic {
         Nothing = 0,
-        PortNameRequest,
-        PortNameReply,
-        UHV2PrioritizedCommandMessage,
+        ANewPortName,
+        AnUHV2PrioritizedCommandMessage,
         SerialPortError,
-        RestartSerialPort,
+        SerialPortDisconnect,
+        SerialPortConnect,
+        SerialPortRestart,
+        MessageSendTimedOut,
+        MessageReadTimedOut
     };
     Q_ENUM(MessageTopic)
     typedef QPair<QByteArray*,QString*> CommandMessage;
@@ -32,10 +37,13 @@ public:
     CommandMessage * lastTransmittedMessage = Q_NULLPTR;
     CommandMessage * lastReceivedMessage = Q_NULLPTR;
     void configSerialPort();
+    void initialize();
+    MessageTopic ErrorStatus = Nothing;
 signals:
     void DirectStateTransitionRequest(const QString &);
     void PortNameChanged();
     void RestartSerialPortConnection();
+    void AFirstPrioritizedCommandMessageReceived();
     void Out(QVariant, QVariant * = Q_NULLPTR);
 };
 Q_DECLARE_METATYPE(UHV2WorkerVarSet::PrioritizedCommandMessage)

@@ -251,9 +251,9 @@ const QByteArray BinaryProtocol::GenMsg()
 const QString BinaryProtocol::GetMessageDirection() const
 {
     if (mHdr<_BaseHdrCmd)
-        return QString("Receive Message From");
+        return QString("From");
     else
-        return QString("Send Message To");
+        return QString("To");
 }
 
 quint8 BinaryProtocol::GetHeader() const

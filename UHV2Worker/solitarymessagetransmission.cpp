@@ -32,7 +32,7 @@ void SolitaryMessageTransmission::onEntry(QEvent *)
                 {
                     anDebug("=> Writing Message Timed Out !");
                     VarSetPtr->lastTransmittedMessage = Q_NULLPTR;
-                    emit VarSetPtr->Out(UHV2WorkerVarSet::MessageSendTimedOut);
+                    emit VarSetPtr->Out(QVariant::fromValue(UHV2WorkerVarSet::MessageSendTimedOut));
                 }
                 emit VarSetPtr->DirectStateTransitionRequest("MessageReceiveAndEmitOut");
             }

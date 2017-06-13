@@ -27,6 +27,12 @@ private slots:
 private:
     Ui::MainWindow *ui;
     BinaryProtocol * uhv2pump0;
+    void updateSENDlabel(const QString &SENDstyleSheet = "",
+                         const QString &SentMsgStr = "",
+                         const QString &SentMessageStr = "");
+    void updateREADlabel(const QString &READstyleSheet = "",
+                         const QString &ReadMsgStr = "",
+                         const QString &ReadMessageStr = "");
 };
 
 #endif // MAINWINDOW_H

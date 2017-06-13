@@ -57,7 +57,7 @@ UHV2Worker::UHV2Worker()
 
 void UHV2Worker::In(QVariant AnUHV2WorkerEnumValue, QVariant *rawData)
 {
-    anDebug("=> External Signal Received !");
+    anDebug("=> An External Message Received !");
     if (QString(AnUHV2WorkerEnumValue.typeName()) == "UHV2WorkerVarSet::MessageTopic")
     {
         anDebug("=> UHV2WorkerVarSet::MessageTopic Parsed !");

@@ -33,7 +33,7 @@ void MessageReceiveAndEmitOut::onEntry(QEvent *)
     {
         anDebug("=> Reading Message Timed Out !");
         VarSetPtr->lastReceivedMessage = Q_NULLPTR;
-        emit VarSetPtr->Out(UHV2WorkerVarSet::MessageReadTimedOut);
+        emit VarSetPtr->Out(QVariant::fromValue(UHV2WorkerVarSet::MessageReadTimedOut));
     }
     emit VarSetPtr->DirectStateTransitionRequest("SolitaryMessageTransmission");
 }

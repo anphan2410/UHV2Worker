@@ -1,10 +1,13 @@
 #ifndef UHV2WORKERVARSET_H
 #define UHV2WORKERVARSET_H
 
+#include <QApplication>
 #include <QObject>
 #include <QPair>
+#include <QThread>
 #include <QMap>
 #include <QSerialPort>
+#include <QSerialPortInfo>
 #include <QStateMachine>
 #include <QMetaType>
 #include "anqtdebug.h"
@@ -24,7 +27,8 @@ public:
         SerialPortConnect,
         SerialPortRestart,
         MessageSendTimedOut,
-        MessageReadTimedOut
+        MessageReadTimedOut,
+        PendingMessageListClear
     };
     Q_ENUM(MessageTopic)
     typedef QPair<QByteArray*,QString*> CommandMessage;

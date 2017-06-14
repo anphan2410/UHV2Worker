@@ -43,6 +43,7 @@ void UHV2WorkerVarSet::initialize()
     SerialPort = new QSerialPort();
     if (PendingMessageList)
         PendingMessageList->clear();
-    PendingMessageList = new QMap<qint8,QList<CommandMessage*>*>();
+    else
+        PendingMessageList = new QMap<qint8,QList<CommandMessage*>*>();
     ErrorStatus = Nothing;
 }

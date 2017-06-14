@@ -46,7 +46,7 @@ UHV2Worker::UHV2Worker()
     connect(WorkingVarSet->SerialPort, &QSerialPort::errorOccurred,
             this, [&](){ WorkingVarSet->ErrorStatus = UHV2WorkerVarSet::SerialPortError;});
     connect(WorkingVarSet, SIGNAL(Out(QVariant,QVariant*)), this, SIGNAL(Out(QVariant,QVariant*)));
-    connect(WorkingVarSet->SerialPort, &QSerialPort::aboutToClose,
+    connect(state0, &QState::entered,
             this, [&](){ emit Out(QVariant::fromValue(UHV2WorkerVarSet::SerialPortDisconnect));});
     connect(this, &QStateMachine::stopped,
             this, [&](){
@@ -88,6 +88,16 @@ void UHV2Worker::In(QVariant AnUHV2WorkerEnumValue, QVariant *rawData)
             {
                 WorkingVarSet->PendingMessageList->insert(newCmdMsg->first, new QList<UHV2WorkerVarSet::CommandMessage*>({newCmdMsg->second}));
             }
+//This is used for direct testing and revise
+//            if (WorkingVarSet->PendingMessageList->contains(0))
+//                qDebug() << "   I : " << WorkingVarSet->PendingMessageList->value(0)->size()
+//                         << " Priority 0";
+//            if (WorkingVarSet->PendingMessageList->contains(1))
+//                qDebug() << "   V : " << WorkingVarSet->PendingMessageList->value(1)->size()
+//                         << " Priority 1";
+//            if (WorkingVarSet->PendingMessageList->contains(5))
+//                qDebug() << "   P : " << WorkingVarSet->PendingMessageList->value(5)->size()
+//                         << " Priority 5";
             if (WorkingVarSet->PendingMessageList->size() == 1)
             {
                 if (WorkingVarSet->PendingMessageList->first()->size() == 1)
@@ -107,6 +117,14 @@ void UHV2Worker::In(QVariant AnUHV2WorkerEnumValue, QVariant *rawData)
             anDebug("=> SerialPortDisconnect Received !");
             *(WorkingVarSet->PortName) = "";
             emit WorkingVarSet->PortNameChanged();
+            break;
+        }
+        case UHV2WorkerVarSet::PendingMessageListClear:
+        {
+            anDebug("=> PendingMessageListClear Received !");
+            WorkingVarSet->PendingMessageList->clear();
+            anDebug("=> PendingMessageList Cleared !");
+            emit Out(QVariant::fromValue(UHV2WorkerVarSet::PendingMessageListClear));
             break;
         }
         default:

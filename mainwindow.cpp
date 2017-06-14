@@ -92,6 +92,10 @@ MainWindow::MainWindow(QWidget *parent) :
 
     connect(anUHV2Worker, &UHV2Worker::Out, this, &MainWindow::In);
 
+    connect(ui->pushButtonClearBuffer, &QPushButton::clicked,
+            this, [&](){
+        emit Out(QVariant::fromValue(UHV2WorkerVarSet::PendingMessageListClear));
+    });
     connect(ui->pushButton, &QPushButton::clicked, ui->pushButtonReadI, &QPushButton::click);
     connect(ui->pushButton, &QPushButton::clicked, ui->pushButtonReadV, &QPushButton::click);
     connect(ui->pushButton, &QPushButton::clicked, ui->pushButtonReadP, &QPushButton::click);
@@ -106,6 +110,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
 MainWindow::~MainWindow()
 {
+    qApp->processEvents();
     delete ui;
 }
 
@@ -168,6 +173,7 @@ void MainWindow::In(QVariant AMessageTopic, QVariant *AMessageContent)
         case UHV2WorkerVarSet::MessageReadTimedOut:
         {
             anqDebug("=> MessageReadTimedOut Received !");
+            updateSENDlabel("",ui->labelSentMsg->text(),ui->labelSentMessage->text());
             updateREADlabel("QLabel { background-color : gray; color : red; }","","Timed Out To Read !");
             break;
         }
@@ -175,6 +181,7 @@ void MainWindow::In(QVariant AMessageTopic, QVariant *AMessageContent)
         {
             anqDebug("=> MessageSendTimedOut Received !");
             updateSENDlabel("QLabel { background-color : gray; color : red; }","","Timed Out To Send !");
+            updateREADlabel("",ui->labelReadMsg->text(),ui->labelReadMessage->text());
             break;
         }
         default:

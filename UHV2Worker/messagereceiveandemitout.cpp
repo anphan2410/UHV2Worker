@@ -15,6 +15,7 @@ MessageReceiveAndEmitOut::~MessageReceiveAndEmitOut()
 void MessageReceiveAndEmitOut::onEntry(QEvent *)
 {
     anDebug("=> Enter State ...");
+    qApp->processEvents();
     if (VarSetPtr->SerialPort->waitForReadyRead(TimeOut4ReadInMilisecond*10))
     {
         QByteArray tmpRead(VarSetPtr->SerialPort->readAll());

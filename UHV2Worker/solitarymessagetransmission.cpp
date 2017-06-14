@@ -15,6 +15,7 @@ SolitaryMessageTransmission::~SolitaryMessageTransmission()
 void SolitaryMessageTransmission::onEntry(QEvent *)
 {
     anDebug("=> Enter State ...");
+    qApp->processEvents();
     while (VarSetPtr->PendingMessageList->size())
     {
         if (VarSetPtr->PendingMessageList->last()->size())

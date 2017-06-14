@@ -2,8 +2,8 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include <QThread>
 #include <QVariant>
+#include <QThread>
 #include <QSerialPort>
 #include <QSerialPortInfo>
 #include "UHV2Worker/uhv2worker.h"

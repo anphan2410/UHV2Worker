@@ -147,6 +147,9 @@ void MainWindow::In(QVariant AMessageTopic, QVariant *AMessageContent)
                     anqDebug("=> Read: " << tmpUHV2.GetMessageTranslation());
                     updateSENDlabel("",ui->labelSentMsg->text(),ui->labelSentMessage->text());
                     updateREADlabel("QLabel { background-color : green; color : yellow; }",tmpUHV2.GetMsg().toHex(),tmpUHV2.GetMessageTranslation());
+                    if (ui->labelSentMessage->text().contains("Off", Qt::CaseInsensitive)
+                            && ui->labelSentMessage->text().contains("HVSwitch", Qt::CaseInsensitive))
+                        ui->pushButtonHVonoff->setText("HV ON");
                 }
                 else if (tmpUHV2.GetMessageDirection() == "To")
                 {
@@ -160,12 +163,17 @@ void MainWindow::In(QVariant AMessageTopic, QVariant *AMessageContent)
                 anqDebug("=> Read: " << coreRepMsg->toHex());
                 updateSENDlabel("",ui->labelSentMsg->text(),ui->labelSentMessage->text());
                 updateREADlabel("QLabel { background-color : green; color : yellow; }",coreRepMsg->toHex(),"");
-                if ((coreRepMsg == QByteArray::fromHex("06")) && ui->labelSentMessage->text().contains("HVSwitch", Qt::CaseInsensitive))
+                if ((QString(coreRepMsg->toHex()) == "06") && ui->labelSentMessage->text().contains("HVSwitch", Qt::CaseInsensitive))
                 {
                     if (ui->labelSentMessage->text().contains("On", Qt::CaseInsensitive))
+                    {
                         ui->pushButtonHVonoff->setText("HV OFF");
+                    }
                     else if (ui->labelSentMessage->text().contains("Off", Qt::CaseInsensitive))
+                    {
                         ui->pushButtonHVonoff->setText("HV ON");
+                    }
+                    ui->labelReadMessage->setText("Acknowledged");
                 }
             }
             break;

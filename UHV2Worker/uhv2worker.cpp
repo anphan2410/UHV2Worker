@@ -89,7 +89,7 @@ void UHV2Worker::In(QVariant AnUHV2WorkerEnumValue, QVariant *rawData)
                 WorkingVarSet->PendingMessageList->insert(newCmdMsg->first, new QList<UHV2WorkerVarSet::CommandMessage*>({newCmdMsg->second}));
             }
 //This is used for direct testing and revise
-//            if (WorkingVarSet->PendingMessageList->contains(0))
+//            if (WorkingVallllllrSet->PendingMessageList->contains(0))
 //                qDebug() << "   I : " << WorkingVarSet->PendingMessageList->value(0)->size()
 //                         << " Priority 0";
 //            if (WorkingVarSet->PendingMessageList->contains(1))

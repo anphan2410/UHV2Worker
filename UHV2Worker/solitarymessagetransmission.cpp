@@ -15,27 +15,37 @@ SolitaryMessageTransmission::~SolitaryMessageTransmission()
 void SolitaryMessageTransmission::onEntry(QEvent *)
 {
     anDebug("=> Enter State ...");
-    if (VarSetPtr->PendingMessageList->size())
+    while (VarSetPtr->PendingMessageList->size())
     {
         if (VarSetPtr->PendingMessageList->last()->size())
+            break;
+        else
+            VarSetPtr->PendingMessageList->remove(VarSetPtr->PendingMessageList->lastKey());
+    }
+    if (VarSetPtr->PendingMessageList->size())
+    {
+        VarSetPtr->lastTransmittedMessagePriority = VarSetPtr->PendingMessageList->lastKey();
+        VarSetPtr->lastTransmittedMessage = VarSetPtr->PendingMessageList->last()->takeFirst();
+        if (VarSetPtr->lastTransmittedMessage)
         {
-            VarSetPtr->lastTransmittedMessagePriority = VarSetPtr->PendingMessageList->lastKey();
-            VarSetPtr->lastTransmittedMessage = VarSetPtr->PendingMessageList->last()->takeFirst();
-            if (VarSetPtr->lastTransmittedMessage)
+            VarSetPtr->SerialPort->write(*(VarSetPtr->lastTransmittedMessage->first));
+            if (VarSetPtr->SerialPort->waitForBytesWritten(TimeOut4WriteInMilisecond))
             {
-                VarSetPtr->SerialPort->write(*(VarSetPtr->lastTransmittedMessage->first));
-                if (VarSetPtr->SerialPort->waitForBytesWritten(TimeOut4WriteInMilisecond))
-                {
-                    anDebug("=> Successfully Write Message !");
-                }
-                else
-                {
-                    anDebug("=> Writing Message Timed Out !");
-                    VarSetPtr->lastTransmittedMessage = Q_NULLPTR;
-                    emit VarSetPtr->Out(QVariant::fromValue(UHV2WorkerVarSet::MessageSendTimedOut));
-                }
-                emit VarSetPtr->DirectStateTransitionRequest("MessageReceiveAndEmitOut");
+                anDebug("=> Successfully Write Message !");
+                emit VarSetPtr->Out(QVariant::fromValue(UHV2WorkerVarSet::AnUHV2PrioritizedCommandMessage),
+                                    new QVariant(QVariant::fromValue(UHV2WorkerVarSet::PrioritizedCommandMessage(VarSetPtr->lastTransmittedMessagePriority, VarSetPtr->lastTransmittedMessage))));
             }
+            else
+            {
+                anDebug("=> Writing Message Timed Out !");
+                VarSetPtr->lastTransmittedMessage = Q_NULLPTR;
+                emit VarSetPtr->Out(QVariant::fromValue(UHV2WorkerVarSet::MessageSendTimedOut));
+            }
+            emit VarSetPtr->DirectStateTransitionRequest("MessageReceiveAndEmitOut");
         }
+    }
+    else
+    {
+        anDebug("=> Wait For A Message !");
     }
 }

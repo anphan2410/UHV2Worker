@@ -29,13 +29,13 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->pushButtonHVonoff, &QPushButton::clicked,
             this, [&](){
         anDebug("=> Button " + ui->pushButtonHVonoff->text() + " Clicked !");
-        if (ui->pushButtonHVonoff->text() != "HV ON")
+        if (ui->pushButtonHVonoff->text() == "HV ON")
         {
             UHV2WorkerVarSet::PrioritizedCommandMessage hvOnMsg;
             hvOnMsg.first = ui->spinBoxHVonoff->value();
             hvOnMsg.second = new UHV2WorkerVarSet::CommandMessage(new QByteArray(uhv2pump0->HVSwitch().On().Ch1().GenMsg()),
                                                                    new QString());
-            for (quint8 index=1; index<=ui->spinBoxHVonoff_2->value(); ++index)
+            for (quint8 index=0; index<=ui->spinBoxHVonoff_2->value(); ++index)
             {
                 emit Out(QVariant::fromValue(UHV2WorkerVarSet::AnUHV2PrioritizedCommandMessage), new QVariant(QVariant::fromValue(hvOnMsg)));
             }
@@ -46,14 +46,55 @@ MainWindow::MainWindow(QWidget *parent) :
             hvOffMsg.first = ui->spinBoxHVonoff->value();
             hvOffMsg.second = new UHV2WorkerVarSet::CommandMessage(new QByteArray(uhv2pump0->HVSwitch().Off().Ch1().GenMsg()),
                                                                    new QString());
-            for (quint8 index=1; index<=ui->spinBoxHVonoff_2->value(); ++index)
+            for (quint8 index=0; index<=ui->spinBoxHVonoff_2->value(); ++index)
             {
                 emit Out(QVariant::fromValue(UHV2WorkerVarSet::AnUHV2PrioritizedCommandMessage), new QVariant(QVariant::fromValue(hvOffMsg)));
             }
         }
         ui->pushButtonHVonoff->setText("WAIT");
     });
+
+    connect(ui->pushButtonReadI, &QPushButton::clicked,
+            this, [&](){
+        UHV2WorkerVarSet::PrioritizedCommandMessage readIstatusMsg;
+        readIstatusMsg.first = ui->spinBoxReadI->value();
+        readIstatusMsg.second = new UHV2WorkerVarSet::CommandMessage(new QByteArray(uhv2pump0->ReadI().Ch1().GenMsg()),
+                                                                     new QString());
+        for (quint8 index=0; index<=ui->spinBoxReadI_2->value(); ++index)
+        {
+            emit Out(QVariant::fromValue(UHV2WorkerVarSet::AnUHV2PrioritizedCommandMessage), new QVariant(QVariant::fromValue(readIstatusMsg)));
+        }
+    });
+
+    connect(ui->pushButtonReadV, &QPushButton::clicked,
+            this, [&](){
+        UHV2WorkerVarSet::PrioritizedCommandMessage ReadVstatusMsg;
+        ReadVstatusMsg.first = ui->spinBoxReadV->value();
+        ReadVstatusMsg.second = new UHV2WorkerVarSet::CommandMessage(new QByteArray(uhv2pump0->ReadV().Ch1().GenMsg()),
+                                                                     new QString());
+        for (quint8 index=0; index<=ui->spinBoxReadV_2->value(); ++index)
+        {
+            emit Out(QVariant::fromValue(UHV2WorkerVarSet::AnUHV2PrioritizedCommandMessage), new QVariant(QVariant::fromValue(ReadVstatusMsg)));
+        }
+    });
+
+    connect(ui->pushButtonReadP, &QPushButton::clicked,
+            this, [&](){
+        UHV2WorkerVarSet::PrioritizedCommandMessage ReadPstatusMsg;
+        ReadPstatusMsg.first = ui->spinBoxReadP->value();
+        ReadPstatusMsg.second = new UHV2WorkerVarSet::CommandMessage(new QByteArray(uhv2pump0->ReadP().Ch1().GenMsg()),
+                                                                     new QString());
+        for (quint8 index=0; index<=ui->spinBoxReadP_2->value(); ++index)
+        {
+            emit Out(QVariant::fromValue(UHV2WorkerVarSet::AnUHV2PrioritizedCommandMessage), new QVariant(QVariant::fromValue(ReadPstatusMsg)));
+        }
+    });
+
     connect(anUHV2Worker, &UHV2Worker::Out, this, &MainWindow::In);
+
+    connect(ui->pushButton, &QPushButton::clicked, ui->pushButtonReadI, &QPushButton::click);
+    connect(ui->pushButton, &QPushButton::clicked, ui->pushButtonReadV, &QPushButton::click);
+    connect(ui->pushButton, &QPushButton::clicked, ui->pushButtonReadP, &QPushButton::click);
 
     foreach (QSerialPortInfo currentScan, QSerialPortInfo::availablePorts())
     {
@@ -92,35 +133,48 @@ void MainWindow::In(QVariant AMessageTopic, QVariant *AMessageContent)
             anqDebug("=> AnUHV2PrioritizedReplyMessage Received !");
             UHV2WorkerVarSet::PrioritizedCommandMessage * newRepMsg
                     = new UHV2WorkerVarSet::PrioritizedCommandMessage(AMessageContent->value<UHV2WorkerVarSet::PrioritizedCommandMessage>());
-            BinaryProtocol tmpUHV2 = BinaryProtocol::BP(*(newRepMsg->second->first));
-            ui->labelSEND->setStyleSheet("");
-            ui->labelSentMsg->setStyleSheet("");
-            ui->labelSentMessage->setStyleSheet("");
-            ui->labelREAD->setStyleSheet("QLabel { background-color : green; color : purple; }");
-            ui->labelReadMsg->setStyleSheet("QLabel { background-color : green; color : purple; }");
-            ui->labelReadMsg->setText(tmpUHV2.GetMsg().toHex());
-            ui->labelReadMessage->setStyleSheet("QLabel { background-color : green; color : purple; }");
-            ui->labelReadMessage->setText(tmpUHV2.GetMessageTranslation());
+            QByteArray * coreRepMsg = newRepMsg->second->first;
+            if (coreRepMsg->size() > 7)
+            {
+                BinaryProtocol & tmpUHV2 = BinaryProtocol::BP(*(coreRepMsg));
+                if (tmpUHV2.GetMessageDirection() == "From")
+                {
+                    anqDebug("=> Read: " << tmpUHV2.GetMessageTranslation());
+                    updateSENDlabel("",ui->labelSentMsg->text(),ui->labelSentMessage->text());
+                    updateREADlabel("QLabel { background-color : green; color : yellow; }",tmpUHV2.GetMsg().toHex(),tmpUHV2.GetMessageTranslation());
+                }
+                else if (tmpUHV2.GetMessageDirection() == "To")
+                {
+                    anqDebug("=> Sent: " << tmpUHV2.GetMessageTranslation());
+                    updateREADlabel("",ui->labelReadMsg->text(),ui->labelReadMessage->text());
+                    updateSENDlabel("QLabel { background-color : green; color : yellow; }",tmpUHV2.GetMsg().toHex(),tmpUHV2.GetMessageTranslation());
+                }
+            }
+            else
+            {
+                anqDebug("=> Read: " << coreRepMsg->toHex());
+                updateSENDlabel("",ui->labelSentMsg->text(),ui->labelSentMessage->text());
+                updateREADlabel("QLabel { background-color : green; color : yellow; }",coreRepMsg->toHex(),"");
+                if ((coreRepMsg == QByteArray::fromHex("06")) && ui->labelSentMessage->text().contains("HVSwitch", Qt::CaseInsensitive))
+                {
+                    if (ui->labelSentMessage->text().contains("On", Qt::CaseInsensitive))
+                        ui->pushButtonHVonoff->setText("HV OFF");
+                    else if (ui->labelSentMessage->text().contains("Off", Qt::CaseInsensitive))
+                        ui->pushButtonHVonoff->setText("HV ON");
+                }
+            }
             break;
         }
         case UHV2WorkerVarSet::MessageReadTimedOut:
         {
             anqDebug("=> MessageReadTimedOut Received !");
-            ui->labelREAD->setStyleSheet("QLabel { background-color : gray; color : red; }");
-            ui->labelReadMsg->setStyleSheet("QLabel { background-color : gray; color : red; }");
-            ui->labelReadMsg->clear();
-            ui->labelReadMessage->setStyleSheet("QLabel { background-color : gray; color : red; }");
-            ui->labelReadMessage->setText("Timed Out To Read !");
+            updateREADlabel("QLabel { background-color : gray; color : red; }","","Timed Out To Read !");
             break;
         }
         case UHV2WorkerVarSet::MessageSendTimedOut:
         {
             anqDebug("=> MessageSendTimedOut Received !");
-            ui->labelSEND->setStyleSheet("QLabel { background-color : gray; color : red; }");
-            ui->labelSentMsg->setStyleSheet("QLabel { background-color : gray; color : red; }");
-            ui->labelSentMsg->clear();
-            ui->labelSentMessage->setStyleSheet("QLabel { background-color : gray; color : red; }");
-            ui->labelSentMessage->setText("Timed Out To Send !");
+            updateSENDlabel("QLabel { background-color : gray; color : red; }","","Timed Out To Send !");
             break;
         }
         default:

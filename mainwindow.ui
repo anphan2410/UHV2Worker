@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>570</width>
-    <height>449</height>
+    <height>516</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -139,7 +139,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>COMMAND             PRIORITY         TIMES</string>
+     <string>COMMAND             PRIORITY         ECHOES</string>
     </property>
    </widget>
    <widget class="QSpinBox" name="spinBoxHVonoff_2">
@@ -186,78 +186,103 @@
     <property name="geometry">
      <rect>
       <x>40</x>
-      <y>230</y>
+      <y>290</y>
       <width>47</width>
       <height>13</height>
      </rect>
     </property>
     <property name="text">
-     <string>SEND</string>
+     <string>   SEND</string>
     </property>
    </widget>
    <widget class="QLabel" name="labelSentMsg">
     <property name="geometry">
      <rect>
       <x>100</x>
-      <y>220</y>
+      <y>280</y>
       <width>441</width>
       <height>31</height>
      </rect>
     </property>
     <property name="text">
-     <string>TextLabel</string>
+     <string/>
+    </property>
+    <property name="margin">
+     <number>11</number>
     </property>
    </widget>
    <widget class="QLabel" name="labelSentMessage">
     <property name="geometry">
      <rect>
       <x>100</x>
-      <y>260</y>
+      <y>320</y>
       <width>441</width>
       <height>31</height>
      </rect>
     </property>
     <property name="text">
-     <string>TextLabel</string>
+     <string/>
+    </property>
+    <property name="margin">
+     <number>11</number>
     </property>
    </widget>
    <widget class="QLabel" name="labelReadMessage">
     <property name="geometry">
      <rect>
       <x>100</x>
-      <y>350</y>
+      <y>410</y>
       <width>441</width>
       <height>31</height>
      </rect>
     </property>
     <property name="text">
-     <string>TextLabel</string>
+     <string/>
+    </property>
+    <property name="margin">
+     <number>11</number>
     </property>
    </widget>
    <widget class="QLabel" name="labelREAD">
     <property name="geometry">
      <rect>
       <x>40</x>
-      <y>320</y>
+      <y>380</y>
       <width>47</width>
       <height>13</height>
      </rect>
     </property>
     <property name="text">
-     <string>READ</string>
+     <string>   READ</string>
     </property>
    </widget>
    <widget class="QLabel" name="labelReadMsg">
     <property name="geometry">
      <rect>
       <x>100</x>
-      <y>310</y>
+      <y>370</y>
       <width>441</width>
       <height>31</height>
      </rect>
     </property>
     <property name="text">
-     <string>TextLabel</string>
+     <string/>
+    </property>
+    <property name="margin">
+     <number>11</number>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton">
+    <property name="geometry">
+     <rect>
+      <x>120</x>
+      <y>150</y>
+      <width>75</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>CustomTest</string>
     </property>
    </widget>
   </widget>

@@ -9,13 +9,14 @@
 class ErrorAnnouncement : public QState
 {
 public:
-    ErrorAnnouncement(UHV2WorkerVarSet *VarSet, quint32 TimerIntervalInMilisecond = 1000);
+    ErrorAnnouncement(UHV2WorkerVarSet *VarSet, quint32 TimerIntervalInMilisecond = 0);
 protected:
     void onEntry(QEvent *) override;
     void onExit(QEvent *) override;
 private:
     QTimer timer;
     UHV2WorkerVarSet * VarSetPtr = Q_NULLPTR;
+    quint32 TimerIntervalMSecs = 0;
 };
 
 #endif // ERRORANNOUNCEMENT_H

@@ -1,13 +1,13 @@
 #include "errorannouncement.h"
 
 ErrorAnnouncement::ErrorAnnouncement(UHV2WorkerVarSet *VarSet, quint32 TimerIntervalInMilisecond)
-    : VarSetPtr(VarSet)
+    : VarSetPtr(VarSet), TimerIntervalMSecs(TimerIntervalInMilisecond)
 {
     anDebug("=> Construct A New State !");
-    timer.setParent(this);
-    timer.setInterval(TimerIntervalInMilisecond);
-    if (VarSet)
+    if (TimerIntervalInMilisecond > 0)
     {
+        timer.setParent(this);
+        timer.setInterval(TimerIntervalInMilisecond);
         QObject::connect(&timer, &QTimer::timeout
                         , this
                         , [VarSet](){
@@ -20,11 +20,14 @@ ErrorAnnouncement::ErrorAnnouncement(UHV2WorkerVarSet *VarSet, quint32 TimerInte
 
 void ErrorAnnouncement::onEntry(QEvent *)
 {
-    timer.start();
+    anDebug("=> Enter State ...");
+    if (TimerIntervalMSecs > 0)
+        timer.start();
 }
 
 void ErrorAnnouncement::onExit(QEvent *)
 {
-    timer.stop();
+    if (TimerIntervalMSecs > 0)
+        timer.stop();
     VarSetPtr->ErrorStatus = UHV2WorkerVarSet::Nothing;
 }

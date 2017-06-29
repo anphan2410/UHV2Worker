@@ -1,12 +1,13 @@
 #include "serialportinforequest.h"
 
-SerialPortInfoRequest::SerialPortInfoRequest(UHV2WorkerVarSet *VarSet, quint32 TimerIntervalInMilisecond)
+SerialPortInfoRequest::SerialPortInfoRequest(UHV2WorkerVarSet *VarSet, quint32 TimerIntervalInMilisecond) :
+    TimerIntervalMSecs(TimerIntervalInMilisecond)
 {
     anDebug("=> Construct A New State !");
-    timer.setParent(this);
-    timer.setInterval(TimerIntervalInMilisecond);
-    if (VarSet)
+    if (TimerIntervalInMilisecond > 0)
     {
+        timer.setParent(this);
+        timer.setInterval(TimerIntervalInMilisecond);
         QObject::connect(&timer, &QTimer::timeout
                         , this
                         , [VarSet](){
@@ -20,10 +21,12 @@ SerialPortInfoRequest::SerialPortInfoRequest(UHV2WorkerVarSet *VarSet, quint32 T
 void SerialPortInfoRequest::onEntry(QEvent *)
 {
     anDebug("=> Enter State ...");
-    timer.start();
+    if (TimerIntervalMSecs > 0)
+        timer.start();
 }
 
 void SerialPortInfoRequest::onExit(QEvent *)
 {
-    timer.stop();
+    if (TimerIntervalMSecs > 0)
+        timer.stop();
 }

@@ -39,7 +39,6 @@ SOURCES += main.cpp\
 HEADERS  += mainwindow.h \
     binaryprotocol.h \
     straystuffs.h \
-    anqtdebug.h \
     UHV2Worker/uhv2worker.h \
     UHV2Worker/serialportinfovalidation.h \
     UHV2Worker/serialportinforequest.h \
@@ -48,6 +47,7 @@ HEADERS  += mainwindow.h \
     UHV2Worker/solitarymessagetransmission.h \
     UHV2Worker/uhv2workervarset.h \
     UHV2Worker/messagereceiveandemitout.h \
-    UHV2Worker/errorannouncement.h
+    UHV2Worker/errorannouncement.h \
+    anlogger.h
 
 FORMS    += mainwindow.ui

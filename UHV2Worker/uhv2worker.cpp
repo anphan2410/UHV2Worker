@@ -45,9 +45,9 @@ UHV2Worker::UHV2Worker()
 
     connect(WorkingVarSet->SerialPort, &QSerialPort::errorOccurred,
             this, [&](){ WorkingVarSet->ErrorStatus = UHV2WorkerVarSet::SerialPortError;});
-    connect(WorkingVarSet, SIGNAL(Out(QVariant,QVariant*)), this, SIGNAL(Out(QVariant,QVariant*)));
+    connect(WorkingVarSet, SIGNAL(Out(QVariant*,QVariant*)), this, SIGNAL(Out(QVariant*,QVariant*)));
     connect(state0, &QState::entered,
-            this, [&](){ emit Out(QVariant::fromValue(UHV2WorkerVarSet::SerialPortDisconnect));});
+            this, [&](){ emit Out(new QVariant(QVariant::fromValue(UHV2WorkerVarSet::SerialPortDisconnect)));});
     connect(this, &QStateMachine::stopped,
             this, [&](){
         anDebug("=> UHV2Worker Stopped !");
@@ -55,13 +55,13 @@ UHV2Worker::UHV2Worker()
     });
 }
 
-void UHV2Worker::In(QVariant AnUHV2WorkerEnumValue, QVariant *rawData)
+void UHV2Worker::In(QVariant *AnUHV2WorkerEnumValue, QVariant *rawData)
 {
     anDebug("=> An External Message Received !");
-    if (QString(AnUHV2WorkerEnumValue.typeName()) == "UHV2WorkerVarSet::MessageTopic")
+    if (QString(AnUHV2WorkerEnumValue->typeName()) == "UHV2WorkerVarSet::MessageTopic")
     {
         anDebug("=> UHV2WorkerVarSet::MessageTopic Parsed !");
-        switch (AnUHV2WorkerEnumValue.toInt()) {
+        switch (AnUHV2WorkerEnumValue->toInt()) {
         case UHV2WorkerVarSet::ANewPortName:
         {
             QString newPortName = rawData->toString();
@@ -124,7 +124,7 @@ void UHV2Worker::In(QVariant AnUHV2WorkerEnumValue, QVariant *rawData)
             anDebug("=> PendingMessageListClear Received !");
             WorkingVarSet->PendingMessageList->clear();
             anDebug("=> PendingMessageList Cleared !");
-            emit Out(QVariant::fromValue(UHV2WorkerVarSet::PendingMessageListClear));
+            emit Out(new QVariant(QVariant::fromValue(UHV2WorkerVarSet::PendingMessageListClear)));
             break;
         }
         default:

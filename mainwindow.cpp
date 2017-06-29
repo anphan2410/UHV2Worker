@@ -18,11 +18,12 @@ MainWindow::MainWindow(QWidget *parent) :
         anDebug("=> Button " + ui->pushButtonConnect->text() + " Clicked !");
         if (ui->pushButtonConnect->text() == "Connect")
         {
-            emit Out(QVariant::fromValue(UHV2WorkerVarSet::ANewPortName), new QVariant(ui->comboBoxSerialPort->currentText()));
+            emit Out(new QVariant(QVariant::fromValue(UHV2WorkerVarSet::ANewPortName)),
+                     new QVariant(ui->comboBoxSerialPort->currentText()));
         }
         else if (ui->pushButtonConnect->text() == "Disconnect")
         {
-            emit Out(QVariant::fromValue(UHV2WorkerVarSet::SerialPortDisconnect));
+            emit Out(new QVariant(QVariant::fromValue(UHV2WorkerVarSet::SerialPortDisconnect)));
         }
         ui->pushButtonConnect->setText("Please Wait ...");
     });
@@ -37,7 +38,8 @@ MainWindow::MainWindow(QWidget *parent) :
                                                                    new QString());
             for (quint8 index=0; index<=ui->spinBoxHVonoff_2->value(); ++index)
             {
-                emit Out(QVariant::fromValue(UHV2WorkerVarSet::AnUHV2PrioritizedCommandMessage), new QVariant(QVariant::fromValue(hvOnMsg)));
+                emit Out(new QVariant(QVariant::fromValue(UHV2WorkerVarSet::AnUHV2PrioritizedCommandMessage)),
+                         new QVariant(QVariant::fromValue(hvOnMsg)));
             }
         }
         else if (ui->pushButtonHVonoff->text() == "HV OFF")
@@ -48,7 +50,8 @@ MainWindow::MainWindow(QWidget *parent) :
                                                                    new QString());
             for (quint8 index=0; index<=ui->spinBoxHVonoff_2->value(); ++index)
             {
-                emit Out(QVariant::fromValue(UHV2WorkerVarSet::AnUHV2PrioritizedCommandMessage), new QVariant(QVariant::fromValue(hvOffMsg)));
+                emit Out(new QVariant(QVariant::fromValue(UHV2WorkerVarSet::AnUHV2PrioritizedCommandMessage)),
+                         new QVariant(QVariant::fromValue(hvOffMsg)));
             }
         }
         ui->pushButtonHVonoff->setText("WAIT");
@@ -62,7 +65,8 @@ MainWindow::MainWindow(QWidget *parent) :
                                                                      new QString());
         for (quint8 index=0; index<=ui->spinBoxReadI_2->value(); ++index)
         {
-            emit Out(QVariant::fromValue(UHV2WorkerVarSet::AnUHV2PrioritizedCommandMessage), new QVariant(QVariant::fromValue(readIstatusMsg)));
+            emit Out(new QVariant(QVariant::fromValue(UHV2WorkerVarSet::AnUHV2PrioritizedCommandMessage)),
+                     new QVariant(QVariant::fromValue(readIstatusMsg)));
         }
     });
 
@@ -74,7 +78,8 @@ MainWindow::MainWindow(QWidget *parent) :
                                                                      new QString());
         for (quint8 index=0; index<=ui->spinBoxReadV_2->value(); ++index)
         {
-            emit Out(QVariant::fromValue(UHV2WorkerVarSet::AnUHV2PrioritizedCommandMessage), new QVariant(QVariant::fromValue(ReadVstatusMsg)));
+            emit Out(new QVariant(QVariant::fromValue(UHV2WorkerVarSet::AnUHV2PrioritizedCommandMessage)),
+                     new QVariant(QVariant::fromValue(ReadVstatusMsg)));
         }
     });
 
@@ -86,7 +91,8 @@ MainWindow::MainWindow(QWidget *parent) :
                                                                      new QString());
         for (quint8 index=0; index<=ui->spinBoxReadP_2->value(); ++index)
         {
-            emit Out(QVariant::fromValue(UHV2WorkerVarSet::AnUHV2PrioritizedCommandMessage), new QVariant(QVariant::fromValue(ReadPstatusMsg)));
+            emit Out(new QVariant(QVariant::fromValue(UHV2WorkerVarSet::AnUHV2PrioritizedCommandMessage)),
+                     new QVariant(QVariant::fromValue(ReadPstatusMsg)));
         }
     });
 
@@ -94,7 +100,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     connect(ui->pushButtonClearBuffer, &QPushButton::clicked,
             this, [&](){
-        emit Out(QVariant::fromValue(UHV2WorkerVarSet::PendingMessageListClear));
+        emit Out(new QVariant(QVariant::fromValue(UHV2WorkerVarSet::PendingMessageListClear)));
     });
     connect(ui->pushButton, &QPushButton::clicked, ui->pushButtonReadI, &QPushButton::click);
     connect(ui->pushButton, &QPushButton::clicked, ui->pushButtonReadV, &QPushButton::click);
@@ -114,13 +120,13 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::In(QVariant AMessageTopic, QVariant *AMessageContent)
+void MainWindow::In(QVariant *AMessageTopic, QVariant *AMessageContent)
 {
     anDebug("=> An External Message Received !");
-    if ( QString(AMessageTopic.typeName()) == "UHV2WorkerVarSet::MessageTopic")
+    if ( QString(AMessageTopic->typeName()) == "UHV2WorkerVarSet::MessageTopic")
     {
         anDebug("=> UHV2WorkerVarSet::MessageTopic Parsed !");
-        switch (AMessageTopic.toInt()) {
+        switch (AMessageTopic->toInt()) {
         case UHV2WorkerVarSet::SerialPortConnect:
         {
             anqDebug("=> SerialPortConnect Received !");

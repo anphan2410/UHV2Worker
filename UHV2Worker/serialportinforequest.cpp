@@ -11,7 +11,7 @@ SerialPortInfoRequest::SerialPortInfoRequest(UHV2WorkerVarSet *VarSet, quint32 T
                         , this
                         , [VarSet](){
                                 anDebug("=> Emit UHV2WorkerVarSet::ANewPortName!");
-                                emit VarSet->Out(QVariant::fromValue(UHV2WorkerVarSet::ANewPortName));
+                                emit VarSet->Out(new QVariant(QVariant::fromValue(UHV2WorkerVarSet::ANewPortName)));
                             }
                         , static_cast<Qt::ConnectionType>(Qt::AutoConnection | Qt::UniqueConnection));
     }

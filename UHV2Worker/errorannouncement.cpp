@@ -12,7 +12,7 @@ ErrorAnnouncement::ErrorAnnouncement(UHV2WorkerVarSet *VarSet, quint32 TimerInte
                         , this
                         , [VarSet](){
                                 anDebug("=> Emit Error Status!");
-                                emit VarSet->Out(QVariant::fromValue(VarSet->ErrorStatus));
+                                emit VarSet->Out(new QVariant(QVariant::fromValue(VarSet->ErrorStatus)));
                             }
                         , static_cast<Qt::ConnectionType>(Qt::AutoConnection | Qt::UniqueConnection));
     }

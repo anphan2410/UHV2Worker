@@ -48,7 +48,7 @@ signals:
     void PortNameChanged();
     void RestartSerialPortConnection();
     void AFirstPrioritizedCommandMessageReceived();
-    void Out(QVariant, QVariant * = Q_NULLPTR);
+    void Out(QVariant *, QVariant * = Q_NULLPTR);
 };
 Q_DECLARE_METATYPE(UHV2WorkerVarSet::PrioritizedCommandMessage)
 #endif // UHV2WORKERVARSET_H

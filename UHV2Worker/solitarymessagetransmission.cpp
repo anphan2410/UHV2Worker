@@ -33,14 +33,14 @@ void SolitaryMessageTransmission::onEntry(QEvent *)
             if (VarSetPtr->SerialPort->waitForBytesWritten(TimeOut4WriteInMilisecond))
             {
                 anDebug("=> Successfully Write Message !");
-                emit VarSetPtr->Out(QVariant::fromValue(UHV2WorkerVarSet::AnUHV2PrioritizedCommandMessage),
+                emit VarSetPtr->Out(new QVariant(QVariant::fromValue(UHV2WorkerVarSet::AnUHV2PrioritizedCommandMessage)),
                                     new QVariant(QVariant::fromValue(UHV2WorkerVarSet::PrioritizedCommandMessage(VarSetPtr->lastTransmittedMessagePriority, VarSetPtr->lastTransmittedMessage))));
             }
             else
             {
                 anDebug("=> Writing Message Timed Out !");
                 VarSetPtr->lastTransmittedMessage = Q_NULLPTR;
-                emit VarSetPtr->Out(QVariant::fromValue(UHV2WorkerVarSet::MessageSendTimedOut));
+                emit VarSetPtr->Out(new QVariant(QVariant::fromValue(UHV2WorkerVarSet::MessageSendTimedOut)));
             }
             emit VarSetPtr->DirectStateTransitionRequest("MessageReceiveAndEmitOut");
         }

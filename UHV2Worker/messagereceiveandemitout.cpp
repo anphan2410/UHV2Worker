@@ -27,14 +27,14 @@ void MessageReceiveAndEmitOut::onEntry(QEvent *)
         VarSetPtr->lastReceivedMessage->first = new QByteArray(tmpRead);
         VarSetPtr->lastReceivedMessage->second = VarSetPtr->lastTransmittedMessage->second;
         anDebug("=> Successfully To Read Message !");
-        emit VarSetPtr->Out(QVariant::fromValue(UHV2WorkerVarSet::AnUHV2PrioritizedCommandMessage),
+        emit VarSetPtr->Out(new QVariant(QVariant::fromValue(UHV2WorkerVarSet::AnUHV2PrioritizedCommandMessage)),
                             new QVariant(QVariant::fromValue(UHV2WorkerVarSet::PrioritizedCommandMessage(VarSetPtr->lastTransmittedMessagePriority, VarSetPtr->lastReceivedMessage))));
     }
     else
     {
         anDebug("=> Reading Message Timed Out !");
         VarSetPtr->lastReceivedMessage = Q_NULLPTR;
-        emit VarSetPtr->Out(QVariant::fromValue(UHV2WorkerVarSet::MessageReadTimedOut));
+        emit VarSetPtr->Out(new QVariant(QVariant::fromValue(UHV2WorkerVarSet::MessageReadTimedOut)));
     }
     emit VarSetPtr->DirectStateTransitionRequest("SolitaryMessageTransmission");
 }

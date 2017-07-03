@@ -10,7 +10,7 @@
 #include <QSerialPortInfo>
 #include <QStateMachine>
 #include <QMetaType>
-#include "anqtdebug.h"
+#include "anlogger.h"
 
 class UHV2WorkerVarSet: public QObject
 {

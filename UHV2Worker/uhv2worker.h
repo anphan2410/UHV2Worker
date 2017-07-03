@@ -4,7 +4,7 @@
 #include <QStateMachine>
 #include <QSignalTransition>
 #include "uhv2workervarset.h"
-#include "anqtdebug.h"
+#include "anlogger.h"
 #include "straystuffs.h"
 #include "serialportinforequest.h"
 #include "serialportinfovalidation.h"

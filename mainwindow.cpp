@@ -15,7 +15,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(this, &MainWindow::Out, anUHV2Worker, &UHV2Worker::In);
     connect(ui->pushButtonConnect, &QPushButton::clicked,
             this, [&](){
-        anDebug("=> Button " + ui->pushButtonConnect->text() + " Clicked !");
+        anAck("Button " + ui->pushButtonConnect->text() + " Clicked !");
         if (ui->pushButtonConnect->text() == "Connect")
         {
             emit Out(new QVariant(QVariant::fromValue(UHV2WorkerVarSet::ANewPortName)),
@@ -29,7 +29,7 @@ MainWindow::MainWindow(QWidget *parent) :
     });
     connect(ui->pushButtonHVonoff, &QPushButton::clicked,
             this, [&](){
-        anDebug("=> Button " + ui->pushButtonHVonoff->text() + " Clicked !");
+        anAck("Button " + ui->pushButtonHVonoff->text() + " Clicked !");
         if (ui->pushButtonHVonoff->text() == "HV ON")
         {
             UHV2WorkerVarSet::PrioritizedCommandMessage hvOnMsg;
@@ -122,26 +122,26 @@ MainWindow::~MainWindow()
 
 void MainWindow::In(QVariant *AMessageTopic, QVariant *AMessageContent)
 {
-    anDebug("=> An External Message Received !");
+    anAck("An External Message Received !");
     if ( QString(AMessageTopic->typeName()) == "UHV2WorkerVarSet::MessageTopic")
     {
-        anDebug("=> UHV2WorkerVarSet::MessageTopic Parsed !");
+        anAck("UHV2WorkerVarSet::MessageTopic Parsed !");
         switch (AMessageTopic->toInt()) {
         case UHV2WorkerVarSet::SerialPortConnect:
         {
-            anqDebug("=> SerialPortConnect Received !");
+            anInfo("SerialPortConnect Received !");
             ui->pushButtonConnect->setText("Disconnect");
             break;
         }
         case UHV2WorkerVarSet::SerialPortDisconnect:
         {
-            anqDebug("=> SerialPortDisconnect Received !");
+            anInfo("SerialPortDisconnect Received !");
             ui->pushButtonConnect->setText("Connect");
             break;
         }
         case UHV2WorkerVarSet::AnUHV2PrioritizedCommandMessage:
         {
-            anqDebug("=> AnUHV2PrioritizedReplyMessage Received !");
+            anInfo("AnUHV2PrioritizedReplyMessage Received !");
             UHV2WorkerVarSet::PrioritizedCommandMessage * newRepMsg
                     = new UHV2WorkerVarSet::PrioritizedCommandMessage(AMessageContent->value<UHV2WorkerVarSet::PrioritizedCommandMessage>());
             QByteArray * coreRepMsg = newRepMsg->second->first;
@@ -150,7 +150,7 @@ void MainWindow::In(QVariant *AMessageTopic, QVariant *AMessageContent)
                 BinaryProtocol & tmpUHV2 = BinaryProtocol::BP(*(coreRepMsg));
                 if (tmpUHV2.GetMessageDirection() == "From")
                 {
-                    anqDebug("=> Read: " << tmpUHV2.GetMessageTranslation());
+                    anInfo("Read: " << tmpUHV2.GetMessageTranslation());
                     updateSENDlabel("",ui->labelSentMsg->text(),ui->labelSentMessage->text());
                     updateREADlabel("QLabel { background-color : green; color : yellow; }",tmpUHV2.GetMsg().toHex(),tmpUHV2.GetMessageTranslation());
                     if (ui->labelSentMessage->text().contains("Off", Qt::CaseInsensitive)
@@ -159,14 +159,14 @@ void MainWindow::In(QVariant *AMessageTopic, QVariant *AMessageContent)
                 }
                 else if (tmpUHV2.GetMessageDirection() == "To")
                 {
-                    anqDebug("=> Sent: " << tmpUHV2.GetMessageTranslation());
+                    anInfo("Sent: " << tmpUHV2.GetMessageTranslation());
                     updateREADlabel("",ui->labelReadMsg->text(),ui->labelReadMessage->text());
                     updateSENDlabel("QLabel { background-color : green; color : yellow; }",tmpUHV2.GetMsg().toHex(),tmpUHV2.GetMessageTranslation());
                 }
             }
             else
             {
-                anqDebug("=> Read: " << coreRepMsg->toHex());
+                anInfo("Read: " << coreRepMsg->toHex());
                 updateSENDlabel("",ui->labelSentMsg->text(),ui->labelSentMessage->text());
                 updateREADlabel("QLabel { background-color : green; color : yellow; }",coreRepMsg->toHex(),"");
                 if ((QString(coreRepMsg->toHex()) == "06") && ui->labelSentMessage->text().contains("HVSwitch", Qt::CaseInsensitive))
@@ -186,14 +186,14 @@ void MainWindow::In(QVariant *AMessageTopic, QVariant *AMessageContent)
         }
         case UHV2WorkerVarSet::MessageReadTimedOut:
         {
-            anqDebug("=> MessageReadTimedOut Received !");
+            anInfo("MessageReadTimedOut Received !");
             updateSENDlabel("",ui->labelSentMsg->text(),ui->labelSentMessage->text());
             updateREADlabel("QLabel { background-color : gray; color : red; }","","Timed Out To Read !");
             break;
         }
         case UHV2WorkerVarSet::MessageSendTimedOut:
         {
-            anqDebug("=> MessageSendTimedOut Received !");
+            anInfo("MessageSendTimedOut Received !");
             updateSENDlabel("QLabel { background-color : gray; color : red; }","","Timed Out To Send !");
             updateREADlabel("",ui->labelReadMsg->text(),ui->labelReadMessage->text());
             break;

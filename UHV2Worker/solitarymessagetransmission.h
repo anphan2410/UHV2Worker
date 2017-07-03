@@ -2,7 +2,7 @@
 #define SOLITARYMESSAGETRANSMISSION_H
 
 #include <QState>
-#include "anqtdebug.h"
+#include "anlogger.h"
 #include "uhv2workervarset.h"
 
 class SolitaryMessageTransmission : public QState

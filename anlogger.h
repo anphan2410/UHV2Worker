@@ -57,15 +57,9 @@
     #include <QIODevice>
     #define __anQt__
 #endif
-/************* Support Variables, Functions and Macros **************************/
+/********************************************************************************/
 
 static char anStdErrBuffer[BUFSIZ];
-
-static const std::chrono::steady_clock::time_point anThisProgramStartingTimePoint = [](){
-    setvbuf(stderr, anStdErrBuffer, _IOFBF, BUFSIZ);
-    return std::chrono::steady_clock::now();
-}();
-#define __anStartTimePoint__ anThisProgramStartingTimePoint
 
 #define anTxtAttribType unsigned short
 
@@ -165,13 +159,6 @@ static const std::chrono::steady_clock::time_point anThisProgramStartingTimePoin
     #define __anFilePathSlashChar__ u'/'
 
 #endif
-
-static const anTxtAttribType anOriginalConsoleTextAttribute = [](){
-    anTxtAttribType tmp = anDefaultTextAttribute;
-    anGetCurrentConsoleTextAttribute(tmp);
-    return tmp;
-}();
-#define __anOriginalConsoleTextAttribute__ anOriginalConsoleTextAttribute
 
 #if _anPositionEnabled && (_anThreadIdPositionEnabled\
         || _anFunctionPositionEnabled || _anFilePositionEnabled\
@@ -607,6 +594,8 @@ inline static void anTmpMessageLogger(
     #define anWarning(msg) anMsg(u8"=> " << msg << u8"\n", anForegroundYellow)
     #define anError(msg) anMsg(u8"=> " << msg << u8"\n", anForegroundRed)
 
+    #define anVar(var) anInfo(#var << u8" = " << var)
+
 /********************************************************************************/
 
 #else
@@ -617,7 +606,21 @@ inline static void anTmpMessageLogger(
     #define anAck(msg)
     #define anWarning(msg)
     #define anError(msg)
+    #define anVar(var)
 #endif
 
+/********************************************************************************/
+static const anTxtAttribType anOriginalConsoleTextAttribute = [](){
+    anTxtAttribType tmp = anDefaultTextAttribute;
+    _anGetConsoleTextAttribute(tmp);
+    return tmp;
+}();
+#define __anOriginalConsoleTextAttribute__ anOriginalConsoleTextAttribute
+static const std::chrono::steady_clock::time_point anThisProgramStartingTimePoint = [](){
+    setvbuf(stderr, anStdErrBuffer, _IOFBF, BUFSIZ);
+    (void) anOriginalConsoleTextAttribute;
+    return std::chrono::steady_clock::now();
+}();
+#define __anStartTimePoint__ anThisProgramStartingTimePoint
 /********************************************************************************/
 #endif // ANLOGGER_H

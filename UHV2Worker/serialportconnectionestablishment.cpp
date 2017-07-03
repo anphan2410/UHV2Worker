@@ -3,7 +3,7 @@
 SerialPortConnectionEstablishment::SerialPortConnectionEstablishment(UHV2WorkerVarSet *VarSet)
     : VarSetPtr(VarSet)
 {
-    anDebug("=> Construct A New State !");
+    anAck("Construct A New State !");
 }
 
 SerialPortConnectionEstablishment::~SerialPortConnectionEstablishment()
@@ -14,17 +14,17 @@ SerialPortConnectionEstablishment::~SerialPortConnectionEstablishment()
 
 void SerialPortConnectionEstablishment::onEntry(QEvent *)
 {
-    anDebug("=> Enter State ...");
+    anAck("Enter State ...");
     VarSetPtr->SerialPort = new QSerialPort();
     VarSetPtr->configSerialPort();
     if (VarSetPtr->SerialPort->open(QIODevice::ReadWrite))
     {
-        anDebug("=> Successfully Open A Serial Port !");
+        anAck("Successfully Open A Serial Port !");
         emit VarSetPtr->Out(new QVariant(QVariant::fromValue(UHV2WorkerVarSet::SerialPortConnect)));
         emit VarSetPtr->DirectStateTransitionRequest("SolitaryMessageTransmission");
     }
     else
     {
-        anDebug("=> Failed To Open A Serial Port !");
+        anAck("Failed To Open A Serial Port !");
     }
 }

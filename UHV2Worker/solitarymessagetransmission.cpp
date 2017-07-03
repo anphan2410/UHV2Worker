@@ -3,7 +3,7 @@
 SolitaryMessageTransmission::SolitaryMessageTransmission(UHV2WorkerVarSet *VarSet, quint16 WriteTimeOutInMilisecond)
     : VarSetPtr(VarSet), TimeOut4WriteInMilisecond(WriteTimeOutInMilisecond)
 {
-    anDebug("=> Construct A New State !");
+    anAck("Construct A New State !");
 }
 
 SolitaryMessageTransmission::~SolitaryMessageTransmission()
@@ -14,7 +14,7 @@ SolitaryMessageTransmission::~SolitaryMessageTransmission()
 
 void SolitaryMessageTransmission::onEntry(QEvent *)
 {
-    anDebug("=> Enter State ...");
+    anAck("Enter State ...");
     qApp->processEvents();
     while (VarSetPtr->PendingMessageList->size())
     {
@@ -32,13 +32,13 @@ void SolitaryMessageTransmission::onEntry(QEvent *)
             VarSetPtr->SerialPort->write(*(VarSetPtr->lastTransmittedMessage->first));
             if (VarSetPtr->SerialPort->waitForBytesWritten(TimeOut4WriteInMilisecond))
             {
-                anDebug("=> Successfully Write Message !");
+                anAck("Successfully Write Message !");
                 emit VarSetPtr->Out(new QVariant(QVariant::fromValue(UHV2WorkerVarSet::AnUHV2PrioritizedCommandMessage)),
                                     new QVariant(QVariant::fromValue(UHV2WorkerVarSet::PrioritizedCommandMessage(VarSetPtr->lastTransmittedMessagePriority, VarSetPtr->lastTransmittedMessage))));
             }
             else
             {
-                anDebug("=> Writing Message Timed Out !");
+                anAck("Writing Message Timed Out !");
                 VarSetPtr->lastTransmittedMessage = Q_NULLPTR;
                 emit VarSetPtr->Out(new QVariant(QVariant::fromValue(UHV2WorkerVarSet::MessageSendTimedOut)));
             }
@@ -47,6 +47,6 @@ void SolitaryMessageTransmission::onEntry(QEvent *)
     }
     else
     {
-        anDebug("=> Wait For A Message !");
+        anAck("Wait For A Message !");
     }
 }

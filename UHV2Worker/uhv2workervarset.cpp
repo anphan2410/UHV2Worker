@@ -5,7 +5,7 @@ UHV2WorkerVarSet::UHV2WorkerVarSet(QObject *parent)
 {
     qRegisterMetaType<UHV2WorkerVarSet::PrioritizedCommandMessage>("UHV2WorkerVarSet::PrioritizedCommandMessage");
     initialize();
-    anDebug("=> Construct A New UHV2WorkerVarSet !");
+    anAck("Construct A New UHV2WorkerVarSet !");
 }
 
 UHV2WorkerVarSet::~UHV2WorkerVarSet()

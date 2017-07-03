@@ -3,7 +3,7 @@
 ErrorAnnouncement::ErrorAnnouncement(UHV2WorkerVarSet *VarSet, quint32 TimerIntervalInMilisecond)
     : VarSetPtr(VarSet), TimerIntervalMSecs(TimerIntervalInMilisecond)
 {
-    anDebug("=> Construct A New State !");
+    anAck("Construct A New State !");
     if (TimerIntervalInMilisecond > 0)
     {
         timer.setParent(this);
@@ -11,7 +11,7 @@ ErrorAnnouncement::ErrorAnnouncement(UHV2WorkerVarSet *VarSet, quint32 TimerInte
         QObject::connect(&timer, &QTimer::timeout
                         , this
                         , [VarSet](){
-                                anDebug("=> Emit Error Status!");
+                                anAck("Emit Error Status!");
                                 emit VarSet->Out(new QVariant(QVariant::fromValue(VarSet->ErrorStatus)));
                             }
                         , static_cast<Qt::ConnectionType>(Qt::AutoConnection | Qt::UniqueConnection));
@@ -20,7 +20,7 @@ ErrorAnnouncement::ErrorAnnouncement(UHV2WorkerVarSet *VarSet, quint32 TimerInte
 
 void ErrorAnnouncement::onEntry(QEvent *)
 {
-    anDebug("=> Enter State ...");
+    anAck("Enter State ...");
     if (TimerIntervalMSecs > 0)
         timer.start();
 }

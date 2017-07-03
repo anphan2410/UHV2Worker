@@ -3,7 +3,7 @@
 
 #include <QDebug>
 #include <QtMath>
-#include "anqtdebug.h"
+#include "anlogger.h"
 #include "straystuffs.h"
 
 ///

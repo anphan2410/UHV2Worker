@@ -3,7 +3,7 @@
 SerialPortInfoRequest::SerialPortInfoRequest(UHV2WorkerVarSet *VarSet, quint32 TimerIntervalInMilisecond) :
     TimerIntervalMSecs(TimerIntervalInMilisecond)
 {
-    anDebug("=> Construct A New State !");
+    anAck("Construct A New State !");
     if (TimerIntervalInMilisecond > 0)
     {
         timer.setParent(this);
@@ -11,7 +11,7 @@ SerialPortInfoRequest::SerialPortInfoRequest(UHV2WorkerVarSet *VarSet, quint32 T
         QObject::connect(&timer, &QTimer::timeout
                         , this
                         , [VarSet](){
-                                anDebug("=> Emit UHV2WorkerVarSet::ANewPortName!");
+                                anAck("Emit UHV2WorkerVarSet::ANewPortName!");
                                 emit VarSet->Out(new QVariant(QVariant::fromValue(UHV2WorkerVarSet::ANewPortName)));
                             }
                         , static_cast<Qt::ConnectionType>(Qt::AutoConnection | Qt::UniqueConnection));
@@ -20,7 +20,7 @@ SerialPortInfoRequest::SerialPortInfoRequest(UHV2WorkerVarSet *VarSet, quint32 T
 
 void SerialPortInfoRequest::onEntry(QEvent *)
 {
-    anDebug("=> Enter State ...");
+    anAck("Enter State ...");
     if (TimerIntervalMSecs > 0)
         timer.start();
 }

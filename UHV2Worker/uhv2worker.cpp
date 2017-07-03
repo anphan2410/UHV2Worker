@@ -2,7 +2,7 @@
 
 UHV2Worker::UHV2Worker()
 {
-    anDebug("=> Construct A New UHV2Worker !");
+    anAck("Construct A New UHV2Worker !");
     WorkingVarSet = new UHV2WorkerVarSet(this);
     SerialPortInfoRequest * state0 = new SerialPortInfoRequest(WorkingVarSet);
     state0->setObjectName("SerialPortInfoRequest");
@@ -50,34 +50,34 @@ UHV2Worker::UHV2Worker()
             this, [&](){ emit Out(new QVariant(QVariant::fromValue(UHV2WorkerVarSet::SerialPortDisconnect)));});
     connect(this, &QStateMachine::stopped,
             this, [&](){
-        anDebug("=> UHV2Worker Stopped !");
+        anAck("UHV2Worker Stopped !");
         WorkingVarSet->initialize();
     });
 }
 
 void UHV2Worker::In(QVariant *AnUHV2WorkerEnumValue, QVariant *rawData)
 {
-    anDebug("=> An External Message Received !");
+    anAck("An External Message Received !");
     if (QString(AnUHV2WorkerEnumValue->typeName()) == "UHV2WorkerVarSet::MessageTopic")
     {
-        anDebug("=> UHV2WorkerVarSet::MessageTopic Parsed !");
+        anAck("UHV2WorkerVarSet::MessageTopic Parsed !");
         switch (AnUHV2WorkerEnumValue->toInt()) {
         case UHV2WorkerVarSet::ANewPortName:
         {
             QString newPortName = rawData->toString();
             if (newPortName != "")
             {
-                anDebug("=> ANewPortName Received !");
+                anAck("ANewPortName Received !");
                 *(WorkingVarSet->PortName) = newPortName;
-                anqDebug("   " _VarView(*(WorkingVarSet->PortName)));
-                anqDebug("=> Emit PortNameChanged() ...");
+                anVar(*(WorkingVarSet->PortName));
+                anInfo("Emit PortNameChanged() ...");
                 emit WorkingVarSet->PortNameChanged();
             }
             break;
         }
         case UHV2WorkerVarSet::AnUHV2PrioritizedCommandMessage:
         {
-            anDebug("=> AnUHV2PrioritizedCommandMessage Received !");
+            anAck("AnUHV2PrioritizedCommandMessage Received !");
             UHV2WorkerVarSet::PrioritizedCommandMessage * newCmdMsg
                     = new UHV2WorkerVarSet::PrioritizedCommandMessage(rawData->value<UHV2WorkerVarSet::PrioritizedCommandMessage>());
             if (WorkingVarSet->PendingMessageList->contains(newCmdMsg->first))
@@ -114,16 +114,16 @@ void UHV2Worker::In(QVariant *AnUHV2WorkerEnumValue, QVariant *rawData)
         }
         case UHV2WorkerVarSet::SerialPortDisconnect:
         {
-            anDebug("=> SerialPortDisconnect Received !");
+            anAck("SerialPortDisconnect Received !");
             *(WorkingVarSet->PortName) = "";
             emit WorkingVarSet->PortNameChanged();
             break;
         }
         case UHV2WorkerVarSet::PendingMessageListClear:
         {
-            anDebug("=> PendingMessageListClear Received !");
+            anAck("PendingMessageListClear Received !");
             WorkingVarSet->PendingMessageList->clear();
-            anDebug("=> PendingMessageList Cleared !");
+            anAck("PendingMessageList Cleared !");
             emit Out(new QVariant(QVariant::fromValue(UHV2WorkerVarSet::PendingMessageListClear)));
             break;
         }

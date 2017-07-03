@@ -3,7 +3,7 @@
 
 #include <QState>
 #include <QSerialPort>
-#include "anqtdebug.h"
+#include "anlogger.h"
 #include "uhv2workervarset.h"
 
 class SerialPortConnectionEstablishment : public QState

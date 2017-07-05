@@ -34,7 +34,7 @@ void SerialPortInfoValidation::onEntry(QEvent *)
     QSerialPortInfo SerialPortInfo(*(VarSetPtr->PortName));
     if (SerialPortInfo.isNull())
     {
-        anAck("SerialPortInfo Is Null !");
+        anWarn("SerialPortInfo Is Null !");
         emit VarSetPtr->DirectStateTransitionRequest("SerialPortInfoRequest");
     }
     else

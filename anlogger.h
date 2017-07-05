@@ -591,7 +591,7 @@ inline static void anTmpMessageLogger(
                                     anMsg(u8"=> " << msg << u8"\n", anForegroundCyan)
     #define anInfo(msg) anMsg(u8"   " << msg << u8"\n", anForegroundWhite)
     #define anAck(msg) anMsg(u8"=> " << msg << u8"\n", anForegroundGreen)
-    #define anWarning(msg) anMsg(u8"=> " << msg << u8"\n", anForegroundYellow)
+    #define anWarn(msg) anMsg(u8"=> " << msg << u8"\n", anForegroundYellow)
     #define anError(msg) anMsg(u8"=> " << msg << u8"\n", anForegroundRed)
 
     #define anVar(var) anInfo(#var << u8" = " << var)
@@ -604,7 +604,7 @@ inline static void anTmpMessageLogger(
     #define anDbg(msg, condition)
     #define anInfo(msg)
     #define anAck(msg)
-    #define anWarning(msg)
+    #define anWarn(msg)
     #define anError(msg)
     #define anVar(var)
 #endif

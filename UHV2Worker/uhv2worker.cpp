@@ -50,14 +50,14 @@ UHV2Worker::UHV2Worker()
             this, [&](){ emit Out(new QVariant(QVariant::fromValue(UHV2WorkerVarSet::SerialPortDisconnect)));});
     connect(this, &QStateMachine::stopped,
             this, [&](){
-        anAck("UHV2Worker Stopped !");
+        anWarn("UHV2Worker Stopped !");
         WorkingVarSet->initialize();
     });
 }
 
 void UHV2Worker::In(QVariant *AnUHV2WorkerEnumValue, QVariant *rawData)
 {
-    anAck("An External Message Received !");
+    anInfo("An External Message Received !");
     if (QString(AnUHV2WorkerEnumValue->typeName()) == "UHV2WorkerVarSet::MessageTopic")
     {
         anAck("UHV2WorkerVarSet::MessageTopic Parsed !");
@@ -123,7 +123,7 @@ void UHV2Worker::In(QVariant *AnUHV2WorkerEnumValue, QVariant *rawData)
         {
             anAck("PendingMessageListClear Received !");
             WorkingVarSet->PendingMessageList->clear();
-            anAck("PendingMessageList Cleared !");
+            anInfo("PendingMessageList Cleared !");
             emit Out(new QVariant(QVariant::fromValue(UHV2WorkerVarSet::PendingMessageListClear)));
             break;
         }

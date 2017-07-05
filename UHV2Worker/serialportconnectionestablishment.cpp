@@ -25,6 +25,6 @@ void SerialPortConnectionEstablishment::onEntry(QEvent *)
     }
     else
     {
-        anAck("Failed To Open A Serial Port !");
+        anWarn("Failed To Open A Serial Port !");
     }
 }

@@ -11,7 +11,7 @@ ErrorAnnouncement::ErrorAnnouncement(UHV2WorkerVarSet *VarSet, quint32 TimerInte
         QObject::connect(&timer, &QTimer::timeout
                         , this
                         , [VarSet](){
-                                anAck("Emit Error Status!");
+                                anWarn("Emit Error Status!");
                                 emit VarSet->Out(new QVariant(QVariant::fromValue(VarSet->ErrorStatus)));
                             }
                         , static_cast<Qt::ConnectionType>(Qt::AutoConnection | Qt::UniqueConnection));

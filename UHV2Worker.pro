@@ -7,7 +7,7 @@
 QT       += core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets serialport
-CONFIG += -std=c++11
+CONFIG += -std=c++11 console
 TARGET = UHV2WorkerExecutableFile
 TEMPLATE = app
 
